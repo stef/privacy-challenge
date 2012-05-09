@@ -1,0 +1,11 @@
+* Welcome Stranger to the Privacy Challenge
+
+By mastering the following set of tests, you will become an online privacy ninja.
+
+Level 0
+
+For mailing you your awards we must establish a trust relationship using pretty good privacy.
+Take our key below and use it to send us your own public key.
+HINT: you do get bonus points if you send us a custom generated, less than a week old, containing only one id and freshly generated email address.
+
+#+INCLUDE: "pubkey.asc" src

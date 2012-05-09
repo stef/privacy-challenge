@@ -1,0 +1,8 @@
+Key-Type: 1
+Key-Length: 4096
+Name-Real: Privacy Challenge master key
+Name-Email: pc@ctrlc.hu
+Expire-Date: 10y
+%secring keys/keyring.sec
+%pubring keys/keyring.pub
+%commit
