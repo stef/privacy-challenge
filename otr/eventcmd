@@ -22,5 +22,9 @@ filename=$4
       echo "say_to -q $jid Hey ${jid%%@*}, You are unfortunately *not* trusted" >>mcabber.fifo
       exit
     }
-    echo "say_to -q $jid Hey ${jid%%@*}, You are trusted" >>mcabber.fifo
+    echo "say_to -q $jid Hey ${jid%%@*}, You are trusted! Unlocking achievement:" >>mcabber.fifo
+    tmp=$(mktemp)
+    ../bin/award.sh "[offtherecord] - connected to a trusted OTR partner" >$tmp
+    printf "say_to -q -f $tmp $jid" >>mcabber.fifo
+    rm $tmp
 }
