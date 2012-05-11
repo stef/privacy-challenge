@@ -1,0 +1,26 @@
+#!/bin/ksh
+# $1 is the event type (MSG, STATUS)
+# $2 for messages is IN, OUT
+# $3 is the jid
+# $4 is an optional filename (with the message contents)
+
+botjid='otrbot@xmpp.hsbp.org'
+
+event=$1
+dir=$2
+jid=$3
+filename=$4
+# Note that the 4th argument is only provided for incoming messages
+# and when 'event_log_files' is set.
+
+[[ $event == "MSG" ]] && [[ $dir = "IN" ]] && {
+    [[ -n "$filename" ]]  && [[ -f "$filename" ]] && {
+        # We could process filename here...
+        /bin/rm $filename
+    }
+    grep -qs "^$jid\s*$botjid.*trust$" ~/.mcabber/otr/$botjid.fpr || {
+      echo "say_to -q $jid Hey ${jid%%@*}, You are unfortunately *not* trusted" >>mcabber.fifo
+      exit
+    }
+    echo "say_to -q $jid Hey ${jid%%@*}, You are trusted" >>mcabber.fifo
+}
