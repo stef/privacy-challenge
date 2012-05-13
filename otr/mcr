@@ -196,6 +196,7 @@ set iq_last_disable_when_notavail = 1
 # to the directory where your modules reside. Though, default compiled-in
 # value should be appropriate.
 #set modules_dir = /usr/lib/mcabber/
+set modules_dir = ./
 
 # Beep
 # Set beep_on_message to 1 if you want mcabber to beep when receiving
@@ -230,7 +231,7 @@ set beep_on_message = 1
 #set event_log_files = 0
 #set event_log_dir = ~/.mcabber/event_files
 
-set events_command = eventcmd
+#set events_command = eventcmd
 #set event_log_files = 1
 #set event_log_dir = event_files
 
@@ -267,6 +268,7 @@ set events_command = eventcmd
 set fifo_name = mcabber.fifo
 set fifo_hide_commands = 0
 set fifo_ignore = 0
+module load fifo
 
 # Traces logging
 # If you want advanced traces, please specify a file and a level here.
@@ -276,8 +278,9 @@ set fifo_ignore = 0
 #  lvl 3: debug logging (XML, etc.)
 #  lvl 4: noisy debug logging (Loudmouth parser...)
 # Default is level 0, no trace logging
-#set tracelog_level = 1
+#set tracelog_level = 4
 #set tracelog_file = ~/.mcabber/mcabber.log
+#set tracelog_file = mcabber.log
 
 # Set the auto-away timeout, in seconds.  If set to a value >0,
 # mcabber will change your status to away if no real activity is detected
@@ -513,3 +516,21 @@ bind 514 = buffer down
 
 # Sample alias to join mcabber channel with "/jmc"
 #alias jmc = room join mcabber@conf.lilotux.net
+
+set events_command_ng = eventcmd-ng
+set eventcmd_ng_hooks = hook-post-message-in;hook-status-change;hook-otr-smp;hook-otr-status-change
+module load eventcmd-ng
+
+set color_background = 234
+set color_general = 244
+set color_info = 240
+set color_msgin = 166
+set color_msgout = 64
+set color_msghl = 136
+set color_bgstatus = 235
+set color_status = 166
+set color_roster = 240
+set color_bgrostersel = 235
+set color_rostersel = 166
+set color_rosterselmsg = 136
+set color_rosternewmsg = 136

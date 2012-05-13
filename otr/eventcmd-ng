@@ -1,0 +1,40 @@
+#!/bin/ksh
+
+botjid='otrbot@xmpp.hsbp.org'
+secret='privacyishard'
+
+#echo "hook $hook" >>log
+#echo "jid $jid" >>log
+#echo "state $state" >>log
+#echo '------------------' >>log
+
+function award {
+    echo "say_to -q $jid Hey ${jid%%@*}, You are trusted! Unlocking achievement:" >>mcabber.fifo
+    tmp=$(mktemp)
+    ../bin/award.sh "$1" >$tmp
+    echo "say_to -q -f $tmp $jid" >>mcabber.fifo
+    rm $tmp
+}
+
+function smp {
+    [[ "$state" == "Ok" ]] && award "[socialistmillionaire]\nestablished trust via the Socialist Millionaire Protocol"
+}
+
+function input {
+    egrep "^${jid}\s*${botjid}.*(trust|smp)$" otr/${botjid}.fpr >/dev/null 2>/dev/null &&
+      award "[offtherecord]\nconnected to a trusted OTR partner" || {
+        echo "say_to -q $jid Hey ${jid%%@*}, You are unfortunately *not* trusted" >>mcabber.fifo
+        echo "say_to -q $jid We could establish trust in various ways:" >>mcabber.fifo
+        echo "say_to -q $jid 1. you could sign your OTR fingerprint with your PGP key and send it to me" >>mcabber.fifo
+        echo "say_to -q $jid 2. or we could use the Socialist Millionaire Protocol (SMP) with a pre-agreed secret" >>mcabber.fifo
+        echo "say_to -q $jid Let's try the SMP with my secret. If you don't know it, simply abort the SMP procedure and try 1." >>mcabber.fifo
+        echo "say_to -q $jid You can come back whenever you have either sent the signed fingerprint to me or you know the password for the SMP." >>mcabber.fifo
+        echo "otr smpq $jid $secret" >>mcabber.fifo
+    }
+}
+
+case "$hook" in
+    hook-post-message-in) input;;
+    hook-otr-smp) smp;;
+esac
+
