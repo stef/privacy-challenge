@@ -1,0 +1,11 @@
+this needs a patched mcabber to run, get it from:
+https://github.com/stef/mcabber
+
+or patch your own mcabber with this:
+patch:
+https://github.com/stef/mcabber/commit/d63087ba2a51410edab5b065054c780a1ee46d3b
+
+furthermore you also need
+http://hg.isbear.org.ua/hg/isbear/mcabber-eventcmd-ng/
+
+when you compile mcabber, also compile the fifo module.
