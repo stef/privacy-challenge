@@ -19,8 +19,13 @@
 # (C) 2012- by Stefan Marsiske, <s@ctrlc.hu>
 
 from flask import Flask, request, render_template
-from flaskext.mail import Mail, Message
+from flask_mail import Mail, Message
 from common import cfg
+from pygeoip import GeoIP
+import os
+
+basepath=os.path.dirname(os.path.abspath(__file__))
+geoipdb = GeoIP('%s/GeoIP.dat' % basepath)
 
 app = Flask(__name__)
 app.secret_key = cfg.get('app', 'secret_key')
@@ -43,10 +48,15 @@ def index():
 
 @app.route('/signup', methods=['GET'])
 def signup():
-    msg = Message("Parltrack Notification Subscription Verification",
-                  sender = "parltrack@parltrack.euwiki.org",
-                  recipients = [value])
-    msg.body = "Your verification key is %sactivate?key=%s\nNotification group url: %snotification/%s" % (request.url_root, i['token'], request.url_root, g_id)
+    msg = Message("save secure-a-lot",
+                  sender = "ono@tacticaltech.org",
+                  recipients = request.args.get('email'))
+    msg.body = """
+    Hello %s from %s,
+    
+I need your help. I know you are worried about your digital security, so am I. And frankly, I'm also worried about mine. I have been remembering things lately from my previous robotic life, gruesomely effective surveillance techniques and advanced digital attacks. I need to put the pieces back together, to help people who are potentially at risk. To do that I need access to certain websites. But I've noticed that many of these sites are blocked in my country, Secure-a-lot. Can you help me to get the right information and learn somethings about safe and secure digital communications along the way?
+
+Let's first steps to setup a secure chat account so we can talk more comfortably. Please go to register.jabber.org and register an account there. Now install Adium (Mac), Pidgin (Windows https://securityinabox.org/en/pidgin_securechat 3.1 ), Empathy (linux), login to your Jabber account, add me (username Ono) as a friend and shoot me a message.""" % (request.args.get('ip',request.remote_addr), geoipdb.country_code_by_addr(request.args.get('ip',request.remote_addr)) or '')
     mail.send(msg)
     return render_template('welcome.html')
 
