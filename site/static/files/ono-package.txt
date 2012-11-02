@@ -1,0 +1,17 @@
+Sorry, I had to remove the file that was here because this site suffered from
+severe denial of service  attacks because of it. I put the file on a Onion-site
+since it's practically impossible to censor such sites or attack them directly,
+so I think your file should be save there.
+
+If you want to access the Onion, please install the Tor Browser and go to [THIS
+URL]. You can find the file there.
+
+The good thing is, Tor will also anonymize your traffic online and the Tor
+Browser will force sites to use HTTPS where possible.
+
+Good luck.
+
+The Administrator
+
+P.S. You can find the installer and instructions here:
+https://www.torproject.org/projects/torbrowser.html.en
