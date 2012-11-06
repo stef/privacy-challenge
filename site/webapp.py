@@ -51,12 +51,9 @@ def signup():
     msg = Message("save secure-a-lot",
                   sender = "ono@tacticaltech.org",
                   recipients = request.args.get('email'))
-    msg.body = """
-    Hello %s from %s,
-    
-I need your help. I know you are worried about your digital security, so am I. And frankly, I'm also worried about mine. I have been remembering things lately from my previous robotic life, gruesomely effective surveillance techniques and advanced digital attacks. I need to put the pieces back together, to help people who are potentially at risk. To do that I need access to certain websites. But I've noticed that many of these sites are blocked in my country, Secure-a-lot. Can you help me to get the right information and learn somethings about safe and secure digital communications along the way?
-
-Let's first steps to setup a secure chat account so we can talk more comfortably. Please go to register.jabber.org and register an account there. Now install Adium (Mac), Pidgin (Windows https://securityinabox.org/en/pidgin_securechat 3.1 ), Empathy (linux), login to your Jabber account, add me (username Ono) as a friend and shoot me a message.""" % (request.args.get('ip',request.remote_addr), geoipdb.country_code_by_addr(request.args.get('ip',request.remote_addr)) or '')
+    msg.body = render_template('welcome.txt',
+                               ip=request.args.get('ip',request.remote_addr),
+                               country=(geoipdb.country_code_by_addr(request.args.get('ip',request.remote_addr)) or ''))
     mail.send(msg)
     return render_template('welcome.html')
 
