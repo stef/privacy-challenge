@@ -26,6 +26,7 @@ import os
 
 basepath=os.path.dirname(os.path.abspath(__file__))
 geoipdb = GeoIP('%s/GeoIP.dat' % basepath)
+geoipcdb = GeoIP('%s/GeoIPCity.dat' % basepath)
 
 app = Flask(__name__)
 app.secret_key = cfg.get('app', 'secret_key')
@@ -61,9 +62,12 @@ def signup():
     msg = Message("save secure-a-lot",
                   sender = "ono@vps598.greenhost.nl",
                   recipients = [request.args.get('email')])
+    from=(geoipcdb.record_by_addr(request.args.get('ip',request.remote_addr)) or {}).get('city','')
+    if not from:
+       from=(geoipdb.country_name_by_addr(request.args.get('ip',request.remote_addr)) or ''))
     msg.body = render_template('welcome.txt',
                                ip=request.args.get('ip',request.remote_addr),
-                               country=(geoipdb.country_name_by_addr(request.args.get('ip',request.remote_addr)) or ''))
+                               country=from)
     mail.send(msg)
     return render_template('welcome.html')
 

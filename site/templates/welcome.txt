@@ -1,4 +1,4 @@
-Hello {{ip}} from {{country}},
+Hello {{ip}}{%if country %} from {{country}}{%endif%},
 
 I need your help. I know you are worried about your digital security, so am I. And frankly, I'm also worried about mine. I have been remembering things lately from my previous robotic life, gruesomely effective surveillance techniques and advanced digital attacks. I need to put the pieces back together, to help people who are potentially at risk. To do that I need access to certain websites. But I've noticed that many of these sites are blocked in my country, Secure-a-lot. Can you help me to get the right information and learn somethings about safe and secure digital communications along the way?
 
