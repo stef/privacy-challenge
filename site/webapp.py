@@ -28,6 +28,10 @@ basepath=os.path.dirname(os.path.abspath(__file__))
 geoipdb = GeoIP('%s/GeoIP.dat' % basepath)
 geoipcdb = GeoIP('%s/GeoIPCity.dat' % basepath)
 
+fp=open('%s/torexits.csv' % basepath,'r')
+torexits=[x.strip() for x in fp]
+fp.close()
+
 app = Flask(__name__)
 app.secret_key = cfg.get('app', 'secret_key')
 app.config.update(
@@ -62,12 +66,15 @@ def signup():
     msg = Message("save secure-a-lot",
                   sender = "ono@vps598.greenhost.nl",
                   recipients = [request.args.get('email')])
-    from=(geoipcdb.record_by_addr(request.args.get('ip',request.remote_addr)) or {}).get('city','')
-    if not from:
-       from=(geoipdb.country_name_by_addr(request.args.get('ip',request.remote_addr)) or ''))
+    if request.args.get('ip',request.remote_addr) in torexits:
+        src="Torland"
+    else:
+        src=(geoipcdb.record_by_addr(request.args.get('ip',request.remote_addr)) or {}).get('city','')
+        if not src:
+            src=(geoipdb.country_name_by_addr(request.args.get('ip',request.remote_addr)) or '')
     msg.body = render_template('welcome.txt',
                                ip=request.args.get('ip',request.remote_addr),
-                               country=from)
+                               country=src)
     mail.send(msg)
     return render_template('welcome.html')
 
