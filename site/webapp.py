@@ -29,6 +29,16 @@ geoipdb = GeoIP('%s/GeoIP.dat' % basepath)
 
 app = Flask(__name__)
 app.secret_key = cfg.get('app', 'secret_key')
+app.config.update(
+	#DEBUG=True,
+	MAIL_FAIL_SILENTLY = False,
+	#EMAIL SETTINGS
+	MAIL_SERVER='localhost',
+	MAIL_PORT=8825,
+	#MAIL_USE_SSL=True,
+	#MAIL_USERNAME = 'you@google.com',
+	#MAIL_PASSWORD = 'GooglePasswordHere'
+	)
 mail = Mail(app)
 
 @app.context_processor
@@ -49,11 +59,11 @@ def index():
 @app.route('/signup', methods=['GET'])
 def signup():
     msg = Message("save secure-a-lot",
-                  sender = "ono@tacticaltech.org",
-                  recipients = request.args.get('email'))
+                  sender = "ono@vps598.greenhost.nl",
+                  recipients = [request.args.get('email')])
     msg.body = render_template('welcome.txt',
                                ip=request.args.get('ip',request.remote_addr),
-                               country=(geoipdb.country_code_by_addr(request.args.get('ip',request.remote_addr)) or ''))
+                               country=(geoipdb.country_name_by_addr(request.args.get('ip',request.remote_addr)) or ''))
     mail.send(msg)
     return render_template('welcome.html')
 
@@ -61,4 +71,5 @@ if __name__ == "__main__":
     app.run(debug        = cfg.get('server', 'debug')
            ,use_debugger = cfg.get('server', 'debug')
            ,port         = int(cfg.get('server', 'port'))
+           #,host         = int(cfg.get('server', 'host'))
            )

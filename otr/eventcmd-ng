@@ -1,11 +1,12 @@
 #!/bin/ksh
 
-botjid='otrbot@xmpp.hsbp.org'
-secret='privacyishard'
+botjid='ono@xmpp.hsbp.org'
+secret='privacyis!hard'
 
 #echo "hook $hook" >>log
 #echo "jid $jid" >>log
 #echo "state $state" >>log
+#echo "msg $message" >>log
 #echo '------------------' >>log
 
 function award {
@@ -17,24 +18,44 @@ function award {
 }
 
 function smp {
-    [[ "$state" == "Ok" ]] && award "[socialistmillionaire]\nestablished trust via the Socialist Millionaire Protocol"
+    [[ "$state" == "Ok" ]] && { #award "[socialistmillionaire]\nestablished trust via the Socialist Millionaire Protocol"
+          echo "say_to -q $jid  Great, now that we can chat securely, I was hoping you could helkp me retrieve a secret file. I dropped the file in a dropbox a while ago, but now the site is being blocked so I cannot access it. Can you have a look? http://vps598.greenhost.nl/robotdropbox" >>mcabber.fifo
+          sleep 10
+          echo "say_to -q $jid  You can come back anytime and get this message again by redoing the SMP dance." >>mcabber.fifo
+    }
 }
 
 function input {
-    egrep "^${jid}\s*${botjid}.*(trust|smp)$" otr/${botjid}.fpr >/dev/null 2>/dev/null &&
-      award "[offtherecord]\nconnected to a trusted OTR partner" || {
-        echo "say_to -q $jid Hey ${jid%%@*}, You are unfortunately *not* trusted" >>mcabber.fifo
-        echo "say_to -q $jid We could establish trust in various ways:" >>mcabber.fifo
-        echo "say_to -q $jid 1. you could sign your OTR fingerprint with your PGP key and send it to me" >>mcabber.fifo
-        echo "say_to -q $jid 2. or we could use the Socialist Millionaire Protocol (SMP) with a pre-agreed secret" >>mcabber.fifo
-        echo "say_to -q $jid Let's try the SMP with my secret. If you don't know it, simply abort the SMP procedure and try 1." >>mcabber.fifo
-        echo "say_to -q $jid You can come back whenever you have either sent the signed fingerprint to me or you know the password for the SMP." >>mcabber.fifo
+    [[ "x$message" == "xpassword" ]] && {
+        echo "say_to -q $jid Oh, yes! The password for the file, you mean? It is: privacyis!hard" >>mcabber.fifo
+        return
+    }
+    [[ "x$message" == "x1mtCxsBpinpe" ]] && {
+        echo "say_to -q $jid Thank you! We have with this we can really make a case! You are one committed Savior of Secure-a-lot. And you are able to browse the internet securely (HTTPS), anonymously (Tor browser) and chat securely with your friend and verify if they are who they say they are (Jabber + OTR)!" >>mcabber.fifo
+        sleep 14
+        echo "say_to -q $jid You've got what it takes to help me expose the wrongdoings that have been going on in Secure-a-lot. Are you up to it to help me a bit more? I will be in contact with you shortly." >>mcabber.fifo
+        return
+    }
+    egrep "^${jid}\s*${botjid}.*(trust|smp)$" otr/${botjid}.fpr >/dev/null 2>/dev/null || { #&&
+      #award "[offtherecord]\nconnected to a trusted OTR partner" || {
+        #echo "say_to -q $jid Hey ${jid%%@*}, You are unfortunately *not* trusted" >>mcabber.fifo
+        #echo "say_to -q $jid We could establish trust in various ways:" >>mcabber.fifo
+        #echo "say_to -q $jid 1. you could sign your OTR fingerprint with your PGP key and send it to me" >>mcabber.fifo
+        #echo "say_to -q $jid 2. or we could use the Socialist Millionaire Protocol (SMP) with a pre-agreed secret" >>mcabber.fifo
+        #echo "say_to -q $jid Let's try the SMP with my secret. If you don't know it, simply abort the SMP procedure and try 1." >>mcabber.fifo
+        #echo "say_to -q $jid You can come back whenever you have either sent the signed fingerprint to me or you know the password for the SMP." >>mcabber.fifo
+        #echo "otr smpq $jid $secret" >>mcabber.fifo
+        echo "say_to -q $jid Hi, good you're here. *finally*. I've been waiting for you. How are you doing?" >>mcabber.fifo
+        sleep 8
+        echo "say_to -q $jid Saving the world is a serious thing. It's good that we have set up a chat connection, but we need to make sure that we can connect securely. To do this we need to do two things. We need to make sure that the chat is 'encrypted', which means that only the sender and the receiver can read the message. We also need to verify each others identity to make sure that we both really are who we say we are. On other words, you need to check that I'm really Ono. Everything clear thus far?" >>mcabber.fifo
+        sleep 16
+        echo "say_to -q $jid Follow the following steps: (Windows https://securityinabox.org/en/pidgin_securechat 3.1 ) and come back with it and answer the secret." >>mcabber.fifo
         echo "otr smpq $jid $secret" >>mcabber.fifo
     }
 }
 
 case "$hook" in
-    hook-post-message-in) input;;
-    hook-otr-smp) smp;;
+    hook-post-message-in) input&;;
+    hook-otr-smp) smp&;;
 esac
 

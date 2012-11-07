@@ -16,8 +16,8 @@
 # (C) 2012- by Stefan Marsiske, <s@ctrlc.hu>
 
 import ConfigParser
-from os import getenv
+from os import getenv, path
 
 cfg = ConfigParser.SafeConfigParser()
-cfg.read('config')
+cfg.read("%s/%s" % (path.dirname(path.abspath(__file__)),'config'))
 
