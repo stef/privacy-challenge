@@ -1,0 +1,15 @@
+Dear Friend,
+
+I'm impressed by your commitment and skills. You have come very far. You are almost a digital comms ninja. There are two more steps we need to make together. You'll need to decrypt this file and send it to me.
+
+In order to do this, please install PGP [HOWTO] and ask me for the password via Jabber by typing 'password' (without the quotes).
+
+Then paste the content of the decrypted file into the jabber chat.
+
+-----BEGIN PGP MESSAGE-----
+Version: GnuPG v1.4.12 (GNU/Linux)
+
+jA0EAwMCXFLYz8v9fo9gyUhww/J7/GgH7Ef1hltXykrsB6DtF6ec87MexpaEFhIW
+QyoDeIBf/OkzVabeKDM7k9iayp/wHZANlahQgdoA7vfR9MYmQvB/690=
+=prx4
+-----END PGP MESSAGE-----

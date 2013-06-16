@@ -5,7 +5,7 @@
 # - Empty lines and lines beginning with a '#' are ignored.
 
 # Please provide your Jabber (XMPP) identifier:
-set jid = otrbot@xmpp.hsbp.org
+set jid = ono@xmpp.hsbp.org
 
 # If password is not given, it will be interactively asked for.
 # Note: if the password contains leading or trailing spaces, you must
@@ -521,16 +521,16 @@ set events_command_ng = eventcmd-ng
 set eventcmd_ng_hooks = hook-post-message-in;hook-status-change;hook-otr-smp;hook-otr-status-change
 module load eventcmd-ng
 
-set color_background = 234
-set color_general = 244
-set color_info = 240
-set color_msgin = 166
-set color_msgout = 64
-set color_msghl = 136
-set color_bgstatus = 235
-set color_status = 166
-set color_roster = 240
-set color_bgrostersel = 235
-set color_rostersel = 166
-set color_rosterselmsg = 136
-set color_rosternewmsg = 136
+#set color_background = 234
+#set color_general = 244
+#set color_info = 240
+#set color_msgin = 166
+#set color_msgout = 64
+#set color_msghl = 136
+#set color_bgstatus = 235
+#set color_status = 166
+#set color_roster = 240
+#set color_bgrostersel = 235
+#set color_rostersel = 166
+#set color_rosterselmsg = 136
+#set color_rosternewmsg = 136

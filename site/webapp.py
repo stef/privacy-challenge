@@ -27,9 +27,24 @@ import os, random, itertools, hmac, hashlib
 
 basepath=os.path.dirname(os.path.abspath(__file__))
 geoipdb = GeoIP('%s/GeoIP.dat' % basepath)
+geoipcdb = GeoIP('%s/GeoIPCity.dat' % basepath)
+
+fp=open('%s/torexits.csv' % basepath,'r')
+torexits=[x.strip() for x in fp]
+fp.close()
 
 app = Flask(__name__)
 app.secret_key = cfg.get('app', 'secret_key')
+app.config.update(
+	#DEBUG=True,
+	MAIL_FAIL_SILENTLY = False,
+	#EMAIL SETTINGS
+	MAIL_SERVER='localhost',
+	MAIL_PORT=8825,
+	#MAIL_USE_SSL=True,
+	#MAIL_USERNAME = 'you@google.com',
+	#MAIL_PASSWORD = 'GooglePasswordHere'
+	)
 mail = Mail(app)
 
 with open('secret','r') as f:
@@ -59,9 +74,15 @@ def signup():
     msg = Message("save secure-a-lot",
                   sender = "ono@vps598.greenhost.nl",
                   recipients = recp)
+    if request.args.get('ip',request.remote_addr) in torexits:
+        src="Torland"
+    else:
+        src=(geoipcdb.record_by_addr(request.args.get('ip',request.remote_addr)) or {}).get('city','')
+        if not src:
+            src=(geoipdb.country_name_by_addr(request.args.get('ip',request.remote_addr)) or '')
     msg.body = render_template('welcome.txt',
                                ip=request.args.get('ip',request.remote_addr),
-                               country=(geoipdb.country_code_by_addr(request.args.get('ip',request.remote_addr)) or ''))
+                               country=src)
     mail.send(msg)
     return render_template('welcome.html')
 
@@ -105,4 +126,5 @@ if __name__ == "__main__":
     app.run(debug        = cfg.get('server', 'debug')
            ,use_debugger = cfg.get('server', 'debug')
            ,port         = int(cfg.get('server', 'port'))
+           #,host         = int(cfg.get('server', 'host'))
            )
