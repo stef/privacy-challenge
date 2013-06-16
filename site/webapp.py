@@ -22,7 +22,8 @@ from flask import Flask, request, render_template
 from flask_mail import Mail, Message
 from common import cfg
 from pygeoip import GeoIP
-import os
+from lepl.apps.rfc3696 import Email
+import os, random, itertools, hmac, hashlib
 
 basepath=os.path.dirname(os.path.abspath(__file__))
 geoipdb = GeoIP('%s/GeoIP.dat' % basepath)
@@ -30,6 +31,9 @@ geoipdb = GeoIP('%s/GeoIP.dat' % basepath)
 app = Flask(__name__)
 app.secret_key = cfg.get('app', 'secret_key')
 mail = Mail(app)
+
+with open('secret','r') as f:
+    secret=f.read().strip()
 
 @app.context_processor
 def contex():
@@ -48,14 +52,54 @@ def index():
 
 @app.route('/signup', methods=['GET'])
 def signup():
+    t1 = Email()
+    recp=request.args.get('email')
+    if not t1(recp):
+        return render_template('weirdmail.html')
     msg = Message("save secure-a-lot",
-                  sender = "ono@tacticaltech.org",
-                  recipients = request.args.get('email'))
+                  sender = "ono@vps598.greenhost.nl",
+                  recipients = recp)
     msg.body = render_template('welcome.txt',
                                ip=request.args.get('ip',request.remote_addr),
                                country=(geoipdb.country_code_by_addr(request.args.get('ip',request.remote_addr)) or ''))
     mail.send(msg)
     return render_template('welcome.html')
+
+def genpassphrase():
+    # todo refactor me into common.py so site+lamson can use me
+    # load words
+    wf=open('words','r')
+    words=wf.readlines()
+    wf.close()
+
+    # gen passphrase
+    tmp=[]
+    while len(tmp)<5:
+        tmp.append(words[random.randrange(0,len(words))].strip())
+    del words
+    def deligen():
+        while True:
+            yield random.choice(u'!@#$%^&*();,"<>[]{}|:"?+_')
+    delim=deligen()
+    return u''.join(itertools.chain.from_iterable(itertools.izip(tmp, delim)))
+
+@app.route('/buddy', methods=['GET'])
+def buddy():
+    error = None
+    password = None
+    t1 = Email()
+    recp=request.args.get('email')
+    if recp:
+        if not t1(recp):
+            error="You have a strange chat account, I can't recognize it, would you please try again:"
+        else:
+            password=genpassphrase()
+            fn="../data/smpsec/%s" % hmac.new(secret, recp, hashlib.sha256).hexdigest()
+            with open(fn,'w') as f:
+                f.write(password)
+    return render_template('buddy.html',
+                           error=error,
+                           password=password)
 
 if __name__ == "__main__":
     app.run(debug        = cfg.get('server', 'debug')
