@@ -118,6 +118,11 @@ def buddy():
             fn="../data/smpsec/%s" % hmac.new(secret, recp, hashlib.sha256).hexdigest()
             with open(fn,'w') as f:
                 f.write(password)
+            msg = Message("start chatting",
+                          sender = "ono@vps598.greenhost.nl",
+                          recipients = recp)
+            msg.body = render_template('1stcontact.txt')
+            mail.send(msg)
     return render_template('buddy.html',
                            error=error,
                            password=password)
