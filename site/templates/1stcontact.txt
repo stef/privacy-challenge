@@ -1,9 +1,0 @@
-Howdy my friend,
-
-Now that we have a shared secret, you should 
-- login to your Jabber account using jitsi, 
-- then add me (username ono@jabber.ccc.de) as a buddy and
-- shoot me a message.
-
-datalove!
-Ono
