@@ -487,7 +487,7 @@ set otr_dir = "otr/"
 #
 # You can set OTR policies from the configuration file (use /help otrpolicy
 # for the details).
-otrpolicy default always
+otrpolicy default manual
 
 # Aliases
 alias me = say /me
@@ -518,7 +518,7 @@ bind 514 = buffer down
 #alias jmc = room join mcabber@conf.lilotux.net
 
 set events_command_ng = eventcmd-ng
-set eventcmd_ng_hooks = hook-post-message-in;hook-status-change;hook-otr-smp;hook-otr-status-change
+set eventcmd_ng_hooks = hook-post-message-in;hook-status-change;hook-otr-smp;hook-otr-start;hook-otr-end
 module load eventcmd-ng
 
 #set color_background = 234
