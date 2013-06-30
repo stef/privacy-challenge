@@ -1,61 +1,209 @@
-#!/bin/ksh
+#!/usr/bin/env python
 
+import os, hmac, hashlib, time
+from router import Router
+
+####################################
+# config
+####################################
+debug=1
+
+basepath='..'
 botjid='ono@xmpp.hsbp.org'
-secret='privacyis!hard'
+#botjid='ono@jabber.ccc.de'
 
-#echo "hook $hook" >>log
-#echo "jid $jid" >>log
-#echo "state $state" >>log
-#echo "msg $message" >>log
-#echo '------------------' >>log
+hooks=['hook-otr-start', 'hook-post-message-in', 'hook-otr-smp']
+states=['start', 'otr', 'smp', 'smpdancer', 'getpks01', 'pks01pwd', 'level01done' ]
+defaulthooks=['hook-post-message-in', 'hook-otr-start']
 
-function award {
-    echo "say_to -q $jid Hey ${jid%%@*}, You are trusted! Unlocking achievement:" >>mcabber.fifo
-    tmp=$(mktemp)
-    ../bin/award.sh "$1" >$tmp
-    echo "say_to -q -f $tmp $jid" >>mcabber.fifo
-    rm $tmp
-}
+####################################
+# globals
+####################################
+router=Router(hooks,states)
 
-function smp {
-    [[ "$state" == "Ok" ]] && { #award "[socialistmillionaire]\nestablished trust via the Socialist Millionaire Protocol"
-          echo "say_to -q $jid  Great, now that we can chat securely, I was hoping you could helkp me retrieve a secret file. I dropped the file in a dropbox a while ago, but now the site is being blocked so I cannot access it. Can you have a look? http://vps598.greenhost.nl/robotdropbox" >>mcabber.fifo
-          sleep 10
-          echo "say_to -q $jid  You can come back anytime and get this message again by redoing the SMP dance." >>mcabber.fifo
-    }
-}
+class Context(object):
+    def __init__(self):
+        self.hook=os.getenv('hook')
+        self.jid=os.getenv('jid')
+        self.message=os.getenv('message')
 
-function input {
-    [[ "x$message" == "xpassword" ]] && {
-        echo "say_to -q $jid Oh, yes! The password for the file, you mean? It is: privacyis!hard" >>mcabber.fifo
-        return
-    }
-    [[ "x$message" == "x1mtCxsBpinpe" ]] && {
-        echo "say_to -q $jid Thank you! We have with this we can really make a case! You are one committed Savior of Secure-a-lot. And you are able to browse the internet securely (HTTPS), anonymously (Tor browser) and chat securely with your friend and verify if they are who they say they are (Jabber + OTR)!" >>mcabber.fifo
-        sleep 14
-        echo "say_to -q $jid You've got what it takes to help me expose the wrongdoings that have been going on in Secure-a-lot. Are you up to it to help me a bit more? I will be in contact with you shortly." >>mcabber.fifo
-        return
-    }
-    egrep "^${jid}\s*${botjid}.*(trust|smp)$" otr/${botjid}.fpr >/dev/null 2>/dev/null || { #&&
-      #award "[offtherecord]\nconnected to a trusted OTR partner" || {
-        #echo "say_to -q $jid Hey ${jid%%@*}, You are unfortunately *not* trusted" >>mcabber.fifo
-        #echo "say_to -q $jid We could establish trust in various ways:" >>mcabber.fifo
-        #echo "say_to -q $jid 1. you could sign your OTR fingerprint with your PGP key and send it to me" >>mcabber.fifo
-        #echo "say_to -q $jid 2. or we could use the Socialist Millionaire Protocol (SMP) with a pre-agreed secret" >>mcabber.fifo
-        #echo "say_to -q $jid Let's try the SMP with my secret. If you don't know it, simply abort the SMP procedure and try 1." >>mcabber.fifo
-        #echo "say_to -q $jid You can come back whenever you have either sent the signed fingerprint to me or you know the password for the SMP." >>mcabber.fifo
-        #echo "otr smpq $jid $secret" >>mcabber.fifo
-        echo "say_to -q $jid Hi, good you're here. *finally*. I've been waiting for you. How are you doing?" >>mcabber.fifo
-        sleep 8
-        echo "say_to -q $jid Saving the world is a serious thing. It's good that we have set up a chat connection, but we need to make sure that we can connect securely. To do this we need to do two things. We need to make sure that the chat is 'encrypted', which means that only the sender and the receiver can read the message. We also need to verify each others identity to make sure that we both really are who we say we are. On other words, you need to check that I'm really Ono. Everything clear thus far?" >>mcabber.fifo
-        sleep 16
-        echo "say_to -q $jid Follow the following steps: (Windows https://securityinabox.org/en/pidgin_securechat 3.1 ) and come back with it and answer the secret." >>mcabber.fifo
-        echo "otr smpq $jid $secret" >>mcabber.fifo
-    }
-}
+        # this is the main application secret shared with lamson and django
+        with open('%s/site/secret' % basepath,'r') as f:
+            self.secret=f.read().strip()
 
-case "$hook" in
-    hook-post-message-in) input&;;
-    hook-otr-smp) smp&;;
-esac
+        # key is the hmac(secret, jid) for reference of users in the fs
+        self.key=hmac.new(self.secret, self.jid, hashlib.sha256).hexdigest()
 
+        self.state=self.getstate()
+
+        self.smpsecret=self.getsmpsecret()
+
+        self.debug()
+
+    ####################################
+    # helper functions
+    ####################################
+
+    def __repr__(self):
+        return u"\nCTX: %s %s\n%s\nsmpsec: %s\nkey: %s\n" % (self.state, self.hook. self.message, self.smpsecret, self.key)
+
+    def handler(self):
+        router.dispatch(self)
+
+    def debug(self):
+        if debug:
+            with open('/tmp/onolog', 'a') as log:
+                print >>log, "hook", self.hook
+                print >>log, "jid", self.jid
+                print >>log, "msg", self.message
+                print >>log, "smpsecret", self.smpsecret
+                print >>log, "key", self.key
+                print >>log, "state", self.state
+                print >>log, '------------------'
+
+    def say(self, msg):
+        with open('%s/otr/mcabber.fifo' % basepath, 'a') as fd:
+            fd.write("say_to -q %s %s\n" % (self.jid, msg))
+
+    def cmd(self, cmd):
+        with open('%s/otr/mcabber.fifo' % basepath, 'a') as fd:
+            fd.write("%s\n" % cmd)
+
+    def setstate(self, state):
+        self.state=state
+        with open('%s/data/states/%s' % (basepath, self.key), 'w') as fd:
+            fd.write(state)
+
+    def getstate(self):
+        try:
+            with open('%s/data/states/%s' % (basepath, self.key), 'r') as fd:
+                return fd.read()
+        except IOError:
+            return 'start'
+
+    def getsmpsecret(self):
+        with open('/tmp/onolog', 'a') as log:
+            print >>log, '%s/data/smpsec/%s' % (basepath, self.key)
+        try:
+            fd=open('%s/data/smpsec/%s' % (basepath, self.key), 'r')
+        except IOError:
+            # uhoh, never before seen player
+            smpsecret=None
+        else:
+            smpsecret=fd.read()
+            fd.close()
+        return smpsecret
+
+####################################
+# routes
+####################################
+
+# start
+@router(states=['start'], hooks=['hook-post-message-in'] )
+def _(ctx):
+    if not ctx.smpsecret:
+        ctx.say("Howdyho!")
+        ctx.say("Hey %s, good to see you!" % (ctx.jid.split('@')[0]))
+        ctx.say("It seems our chat is not encrypted. Let me try to start the encryption. " \
+                 "If you never done this before, it might take a few seconds to finish.")
+        ctx.cmd("otr start")
+    else:
+        ctx.say("I recognize you, before we establish trust, let me try to (re)start the encryption.")
+        ctx.cmd("otr start")
+
+# start + otr -> smp
+@router(states=['start'], hooks=['hook-otr-start'] )
+def _(ctx):
+    ctx.setstate('otr')
+    otr(ctx)
+
+@router(states=['otr'], hooks=defaulthooks )
+def otr(ctx):
+    if not ctx.smpsecret:
+        ctx.cmd("otrpolicy %s always" % ctx.jid)
+        ctx.say("Hey %s, good to see you! We should establish some kind of trust for our upcoming communication." % (ctx.jid.split('@')[0]))
+        ctx.say("Please go to: https://vps598.greenhost.nl/buddy")
+        ctx.say("to get a one time usable shared secret between us two, then come back.")
+        ctx.setstate('smp')
+    else:
+        startsmp(ctx)
+
+@router(states=['smp'], hooks=defaulthooks)
+def _(ctx):
+    if not ctx.smpsecret:
+        ctx.say("Having trouble? Maybe someone from the tactical technology collective can help?")
+        ctx.say("To continue go to: https://vps598.greenhost.nl/buddy")
+        ctx.say("to get a one time usable shared secret between us two, then come back.")
+    else:
+        startsmp(ctx)
+
+def startsmp(ctx):
+    ctx.say("Hi, good you're here. *finally*. I've been waiting for you. How are you doing?")
+    ctx.say("Saving the world is a serious thing. It's good that we have set up a chat connection," \
+        "but we need to make sure that we can connect securely. To do this we need to do two things." \
+        " We need to make sure that the chat is 'encrypted', which means that only the sender and the" \
+        " receiver can read the message. We also need to verify each others identity to make sure" \
+        " that we both really are who we say we are. On other words, you need to check that I'm really" \
+        " Ono. Everything clear thus far?")
+    ctx.say("You should answer the question with the secret from the webpage earlier.")
+    ctx.cmd("otr smpq %s %s" % (ctx.jid, ctx.smpsecret))
+
+@router(states=['otr', 'smp'], hooks=['hook-otr-smp'] )
+def _(ctx):
+    if not ctx.smpsecret:
+        ctx.say("We have no shared secret, wanna do a telepathic diffie-hellman perhaps?")
+        ctx.say("You might want go to: https://vps598.greenhost.nl/buddy")
+        ctx.say("... to get yourself a secret, that we can use for establishing our trust.")
+        if ctx.state != 'smp': ctx.setstate('smp')
+    else:
+        smpstate=os.getenv('state')
+        with open('/tmp/onolog', 'a') as log:
+            print >>log, "XXX smpstate", smpstate
+        if smpstate == "Ok":
+            ctx.say("Fantastico now this communication is completed in a secure manner." \
+                "I will hang up now, and you can go back to the page: " \
+                "http://vps598.greenhost.nl/static/yay1.html")
+            ctx.setstate('smpdancer')
+        elif smpstate != "Response":
+            ctx.say("That didn't work: %s" % smpstate)
+
+@router(states=['smpdancer'], hooks=defaulthooks)
+def _(ctx):
+    ctx.say("Great, now that we can chat securely, I was hoping you could help me retrieve a secret file. " \
+        "I dropped the file in a dropbox a while ago, but now the site is being blocked so I cannot access" \
+        " it. Can you have a look? http://vps598.greenhost.nl/robotdropbox")
+    ctx.setstate('getpks01')
+
+@router(states=['getpks01'], hooks=defaulthooks)
+def _(ctx):
+    ctx.say("Oh, yes! The password for the file, you mean? It is: privacyis!hard")
+    ctx.setstate('pks01pwd')
+
+@router(states=['pks01pwd'], pattern="1mtCxsBpinpe", hooks=defaulthooks)
+def _(ctx):
+    ctx.say("Thank you! We have with this we can really make a case! You are one committed Savior of " \
+        "Secure-a-lot. And you are able to browse the internet securely (HTTPS), anonymously (Tor browser)" \
+        " and chat securely with your friend and verify if they are who they say they are (Jabber + OTR)!")
+    ctx.say("You've got what it takes to help me expose the wrongdoings that have been going on in " \
+        "Secure-a-lot. Are you up to it to help me a bit more? I will be in contact with you shortly.")
+    ctx.setstate('level01done')
+
+@router(states=['pks01pwd'], hooks=defaulthooks)
+def _(ctx):
+        ctx.say("I was hoping you could help me retrieve a secret file. But now the site is being blocked" \
+            " so I cannot access it. Can you have a look? http://vps598.greenhost.nl/robotdropbox")
+        ctx.say("The password for it is: privacyis!hard")
+
+@router(states=['level01done'], hooks=defaulthooks)
+def _(ctx):
+    ctx.say("I'm off to investigate the results and report back soon if I need your help again")
+
+####################################
+
+if __name__ == "__main__":
+    try:
+        Context().handler()
+    except:
+        import traceback
+        with open('/tmp/onolog', 'a') as log:
+            print >>log, traceback.format_exc()
