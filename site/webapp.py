@@ -100,7 +100,7 @@ def genpassphrase():
     del words
     def deligen():
         while True:
-            yield random.choice(u'!@#$%^&*();,"<>[]{}|:"?+_')
+            yield random.choice(u'!@#$%^&*();,<>[]{}|:"?+_')
     delim=deligen()
     return u''.join(itertools.chain.from_iterable(itertools.izip(tmp, delim)))
 
