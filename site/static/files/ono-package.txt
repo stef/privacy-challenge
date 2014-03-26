@@ -15,3 +15,5 @@ The Administrator
 
 P.S. You can find the installer and instructions here:
 https://www.torproject.org/projects/torbrowser.html.en
+more background on the Tor Browser can be found on:
+https://securityinabox.org/en/tor_main

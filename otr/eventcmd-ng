@@ -9,8 +9,8 @@ from router import Router
 debug=1
 
 basepath='..'
-botjid='ono@xmpp.hsbp.org'
-#botjid='ono@jabber.ccc.de'
+#botjid='ono@xmpp.hsbp.org'
+botjid='ono@jabber.ccc.de'
 
 hooks=['hook-otr-start', 'hook-post-message-in', 'hook-otr-smp']
 states=['start', 'otr', 'smp', 'smpdancer', 'getpks01', 'pks01pwd', 'level01done' ]
@@ -122,7 +122,7 @@ def otr(ctx):
     if not ctx.smpsecret:
         ctx.cmd("otrpolicy %s always" % ctx.jid)
         ctx.say("Hey %s, good to see you! We should establish some kind of trust for our upcoming communication." % (ctx.jid.split('@')[0]))
-        ctx.say("Please go to: https://vps598.greenhost.nl/buddy")
+        ctx.say("Please go to: https://game.onorobot.org/buddy")
         ctx.say("to get a one time usable shared secret between us two, then come back.")
         ctx.setstate('smp')
     else:
@@ -132,7 +132,7 @@ def otr(ctx):
 def _(ctx):
     if not ctx.smpsecret:
         ctx.say("Having trouble? Maybe someone from the tactical technology collective can help?")
-        ctx.say("To continue go to: https://vps598.greenhost.nl/buddy")
+        ctx.say("To continue go to: https://game.onorobot.org/buddy")
         ctx.say("to get a one time usable shared secret between us two, then come back.")
     else:
         startsmp(ctx)
@@ -152,7 +152,7 @@ def startsmp(ctx):
 def _(ctx):
     if not ctx.smpsecret:
         ctx.say("We have no shared secret, wanna do a telepathic diffie-hellman perhaps?")
-        ctx.say("You might want go to: https://vps598.greenhost.nl/buddy")
+        ctx.say("You might want go to: https://game.onorobot.org/buddy")
         ctx.say("... to get yourself a secret, that we can use for establishing our trust.")
         if ctx.state != 'smp': ctx.setstate('smp')
     else:
@@ -162,7 +162,7 @@ def _(ctx):
         if smpstate == "Ok":
             ctx.say("Fantastico now this communication is completed in a secure manner." \
                 "I will hang up now, and you can go back to the page: " \
-                "http://vps598.greenhost.nl/static/yay1.html")
+                "http://game.onorobot.org/static/yay1.html")
             ctx.setstate('smpdancer')
         elif smpstate != "Response":
             ctx.say("That didn't work: %s" % smpstate)
@@ -171,7 +171,7 @@ def _(ctx):
 def _(ctx):
     ctx.say("Great, now that we can chat securely, I was hoping you could help me retrieve a secret file. " \
         "I dropped the file in a dropbox a while ago, but now the site is being blocked so I cannot access" \
-        " it. Can you have a look? http://vps598.greenhost.nl/robotdropbox")
+        " it. Can you have a look? http://game.onorobot.org/robotdropbox")
     ctx.setstate('getpks01')
 
 @router(states=['getpks01'], hooks=defaulthooks)
@@ -191,12 +191,14 @@ def _(ctx):
 @router(states=['pks01pwd'], hooks=defaulthooks)
 def _(ctx):
         ctx.say("I was hoping you could help me retrieve a secret file. But now the site is being blocked" \
-            " so I cannot access it. Can you have a look? http://vps598.greenhost.nl/robotdropbox")
+            " so I cannot access it. Can you have a look? http://game.onorobot.org/robotdropbox")
         ctx.say("The password for it is: privacyis!hard")
 
 @router(states=['level01done'], hooks=defaulthooks)
 def _(ctx):
-    ctx.say("I'm off to investigate the results and report back soon if I need your help again")
+    ctx.say("I'm off to investigate the results and report back soon if I need "
+          "your help again. In the meanwhile you can visit my wiki where we "
+          "document all this: https://wiki.onorobot.org.")
 
 ####################################
 

@@ -5,12 +5,12 @@
 # - Empty lines and lines beginning with a '#' are ignored.
 
 # Please provide your Jabber (XMPP) identifier:
-set jid = ono@xmpp.hsbp.org
+set jid = ono@jabber.ccc.de
 
 # If password is not given, it will be interactively asked for.
 # Note: if the password contains leading or trailing spaces, you must
 # enclose it with quotes: set password = " example password "
-set password = fopUrAxRuWim8graxyegNo
+set password = copypastingtokvmislame
 
 # You can provide a server name if you want mcabber to connect
 # to a specific server.
@@ -46,7 +46,7 @@ set tls = 1
 # 1. gnutls-cli -p 5223 $your_server
 # 2. openssl s_client -connect $your_server:5223 | \
 #    openssl x509 -fingerprint -md5 -noout
-set ssl_fingerprint = 15:60:9F:C6:F1:1A:35:0A:94:03:9E:A4:42:41:14:19
+#set ssl_fingerprint = 15:60:9F:C6:F1:1A:35:0A:94:03:9E:A4:42:41:14:19
 # Set ssl_ignore_checks to 1 to disable all certificate checks except the
 # fingerprint check.
 set ssl_ignore_checks = 1
@@ -518,7 +518,7 @@ bind 514 = buffer down
 #alias jmc = room join mcabber@conf.lilotux.net
 
 set events_command_ng = eventcmd-ng
-set eventcmd_ng_hooks = hook-post-message-in;hook-status-change;hook-otr-smp;hook-otr-start;hook-otr-end
+set eventcmd_ng_hooks = hook-post-message-in;hook-status-change;hook-otr-smp;hook-otr-status-change;hook-otr-start;hook-otr-end;hook-subscription 
 module load eventcmd-ng
 
 #set color_background = 234

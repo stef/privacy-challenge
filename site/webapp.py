@@ -36,7 +36,7 @@ fp.close()
 app = Flask(__name__)
 app.secret_key = cfg.get('app', 'secret_key')
 app.config.update(
-	#DEBUG=True,
+	DEBUG=True,
 	MAIL_FAIL_SILENTLY = False,
 	#EMAIL SETTINGS
 	MAIL_SERVER='localhost',
@@ -47,7 +47,7 @@ app.config.update(
 	)
 mail = Mail(app)
 
-with open('secret','r') as f:
+with open('%s/secret' % basepath,'r') as f:
     secret=f.read().strip()
 
 @app.context_processor
@@ -72,15 +72,16 @@ def signup():
     if not t1(recp):
         return render_template('weirdmail.html')
     msg = Message("save secure-a-lot",
-                  sender = "ono@vps598.greenhost.nl",
-                  recipients = recp)
+                  sender = "ono@game.onorobot.org",
+                  recipients = [recp])
     if request.args.get('ip',request.remote_addr) in torexits:
-        src="Torland"
+        src="Torland (Great!)"
     else:
         src=(geoipcdb.record_by_addr(request.args.get('ip',request.remote_addr)) or {}).get('city','')
         if not src:
             src=(geoipdb.country_name_by_addr(request.args.get('ip',request.remote_addr)) or '')
     msg.body = render_template('welcome.txt',
+                               vendor=request.user_agent.platform,
                                ip=request.args.get('ip',request.remote_addr),
                                country=src)
     mail.send(msg)
@@ -89,7 +90,7 @@ def signup():
 def genpassphrase():
     # todo refactor me into common.py so site+lamson can use me
     # load words
-    wf=open('words','r')
+    wf=open('%s/words' % basepath,'r')
     words=wf.readlines()
     wf.close()
 
@@ -115,7 +116,7 @@ def buddy():
             error="You have a strange chat account, I can't recognize it, would you please try again:"
         else:
             password=genpassphrase()
-            fn="../data/smpsec/%s" % hmac.new(secret, recp, hashlib.sha256).hexdigest()
+            fn="%s/../data/smpsec/%s" % (basepath, hmac.new(secret, recp, hashlib.sha256).hexdigest())
             with open(fn,'w') as f:
                 f.write(password)
     return render_template('buddy.html',
