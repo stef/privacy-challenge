@@ -1,12 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
+<h1>Welcome to the ONO digital security game!</h1>
 <p>Do you want to help Ono save Secure-a-lot and learn all about safe and secure
-communications along the way?  here, and Ono will get in contact with YOU!</p>
+communications along the way?  If you are ready for your treasure hunt through the internet, enter your email, and Ono will get in contact with YOU!</p>
 <form action="signup">
-   <label>your email address*</label><input type="text" name="email" />
+   <label>your email address:</label><input type="text" name="email" />
    <input type="submit" value="signup" />
 </form>
-<p>Hint: you shouldn't trust random 3rd parties, creating a unique email
-address for this contact is an excellent way to protect your identity in case
-the untrusted 3rd party leaks private information.</p>
+<p><small>Hint: You shouldn't trust random third parties with your email address.  How are you sure you can trust us?  Creating a unique email address for this contact is an excellent way to protect your identity in case the untrusted 3rd party leaks private information.<small></p>
 {% endblock %}

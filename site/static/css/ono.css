@@ -262,3 +262,162 @@ a:active {
     font-weight: bold;
     border-bottom: #f1f1f1 1px solid;
 }     
+
+
+
+
+
+
+
+form{
+    background-color:rgba(0,0,0,.2);
+    padding:2em 1em;
+        box-shadow: 3px 3px 0 1px orange;
+
+}
+
+
+
+input {
+    color:#3c3c3c;
+  font-weight:500;
+    font-size: 1.4em;
+    border-radius: 0;
+    background-color: #fbfbfb;
+    padding: .5em;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    box-sizing: border-box;
+  border: 3px solid rgba(0,0,0,0);
+}
+
+input:focus{
+    background: #fff;
+    box-shadow: 0;
+    border: 3px solid #3498db;
+    color: #3498db;
+    outline: none;
+}
+
+
+input[type="submit"]{
+    border: #fbfbfb solid 4px;
+    cursor:pointer;
+    background-color: orange;
+    color:white;
+    font-size:1.4em;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+  margin-top:-4px;
+  font-weight:700;
+}
+
+input[type="submit"]:hover{
+    background-color: #fff;
+    color: orange;
+}
+    
+input[type="submit"]:hover {
+    color: orange;
+}
+    
+.ease {
+    width: 0px;
+    background-color: #fbfbfb;
+    -webkit-transition: .3s ease;
+    -moz-transition: .3s ease;
+    -o-transition: .3s ease;
+    -ms-transition: .3s ease;
+    transition: .3s ease;
+}
+
+input[type="submit"]:hover .ease{
+  width:100%;
+  background-color:white;
+}
+
+
+
+form label{
+    display: inline-block;
+    position: relative;
+    width: 20%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#content{
+ background-color: rgba(255,255,255,.8);
+    color:#000;
+    border: 1px solid #999999;
+    box-shadow: 3px 3px 0 1px rgba(255, 255, 255, 0.5);
+    font-family: "Source code Pro", "Courier New", "mono", "sans";
+    font-weight: 500;
+    line-height: 1.5em;
+    margin: 2em auto;
+    max-width: 600px;
+    padding: 2em;
+
+}
+
+#onologo{
+    width:468px;
+    background-image: url(../images/onobackground.jpg);
+    height:260px;
+    margin:0 auto;
+
+    -moz-animation-duration: 10s;
+-o-animation-duration: 10s;
+-webkit-animation-duration: 10s;
+animation-duration: 10s;
+}
+
+#onohimself{
+    width:468px;
+    background-image: url(../images/onohimself.png);
+    height:260px;
+    -moz-animation-duration: 3s;
+  -moz-animation-delay: 2s;
+  -moz-animation-iteration-count: infinite;
+      -o-animation-duration: 3s;
+  -o-animation-delay: 2s;
+  -o-animation-iteration-count: infinite;
+        -webkit-animation-duration: 3s;
+  -webkit-animation-delay: 2s;
+  -webkit-animation-iteration-count: infinite;
+        animation-duration: 3s;
+  animation-delay: 2s;
+  animation-iteration-count: infinite;
+}
+
+small{
+    opacity:1;
+ color: #3498db;
+
+}
+
+
+h1{
+    text-align: center;
+        text-shadow: 2px 2px 0px #3498db;
+
+}

@@ -13,11 +13,14 @@ one. I'll only remember the last one I gave you)</p>
 {% if error %}
 <p>{{error}}</p>
 {% else %}
-<p>Great! Now that you have a chat account, please tell me:</p>
+<p>Great! Now that you have a chat account, please tell me what it is</p>
 {% endif %}
 <form action="buddy">
-   <label>your jabber address</label> <input type="text" name="email" />
+   <label>your jabber address : </label> <input type="text" name="email" />
    <input type="submit" value="Tell Ono" />
 </form>
+<p>
+<small>Hint: this should look like: <strong>username</strong>@jabber.ccc.de</small>
+</p>
 {% endif %}
 {% endblock %}
