@@ -421,3 +421,17 @@ h1{
         text-shadow: 2px 2px 0px #3498db;
 
 }
+
+#footer{
+    position: relative;
+    bottom: 0;
+    width:100%;
+    padding: 1em;
+    background-color:#666;
+    text-align:center;
+}
+
+#footer:hover{
+    opacity:1;
+}
+
