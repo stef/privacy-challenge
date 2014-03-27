@@ -162,7 +162,7 @@ def _(ctx):
         if smpstate == "Ok":
             ctx.say("Fantastico now this communication is completed in a secure manner." \
                 "I will hang up now, and you can go back to the page: " \
-                "http://game.onorobot.org/static/yay1.html")
+                "http://game.onorobot.org/yay1")
             ctx.setstate('smpdancer')
         elif smpstate != "Response":
             ctx.say("That didn't work: %s" % smpstate)

@@ -64,6 +64,9 @@ def index():
                            ,vendor=request.user_agent.platform
                            ,ip=request.args.get('ip',request.remote_addr)
                            )
+@app.route('/yay1')
+def yay1():
+    return render_template('yay1.html')
 
 @app.route('/signup', methods=['GET'])
 def signup():
