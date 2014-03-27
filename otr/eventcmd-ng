@@ -38,6 +38,8 @@ class Context(object):
 
         self.smpsecret=self.getsmpsecret()
 
+        self.type=os.getenv('type')
+
         self.debug()
 
     ####################################
@@ -59,6 +61,7 @@ class Context(object):
                 print >>log, "smpsecret", self.smpsecret
                 print >>log, "key", self.key
                 print >>log, "state", self.state
+                print >>log, "type", self.type
                 print >>log, '------------------'
 
     def say(self, msg):
@@ -110,6 +113,11 @@ def _(ctx):
     else:
         ctx.say("I recognize you, before we establish trust, let me try to (re)start the encryption.")
         ctx.cmd("otr start")
+
+@router(states=['start'], hooks=['hook-subscription'] )
+def _(ctx):
+   if ctx.type=='subscribe':
+      ctx.cmd("event %s accept" % ctx.message)
 
 # start + otr -> smp
 @router(states=['start'], hooks=['hook-otr-start'] )
