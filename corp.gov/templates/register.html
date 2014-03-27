@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
 <form action="buddy">
+<div class="formset">
    <label>Name: </label> <input type="text" name="name" />
+</div><div class="formset">
    <label>Country: </label>
    <select name="country">
       <option value="AF">Afghanistan</option>
@@ -254,10 +256,16 @@
       <option value="ZM">Zambia</option>
       <option value="ZW">Zimbabwe</option>
    </select>
+   </div><div class="formset">
    <label>Address : </label> <input type="text" name="address" />
+   </div><div class="formset">
    <label>Company / Affiliation: </label> <input type="text" name="org" />
+   </div><div class="formset">
    <label>Department: </label> <input type="text" name="dept" />
+   </div><div class="formset">
    <label>Position: </label> <input type="text" name="pos" />
+   </div><div class="formset">
    <input type="submit" />
+</div>
 </form>
 {% endblock %}
