@@ -1,0 +1,45 @@
+{% block doctype %}<!html>{% endblock %}
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="content-language" content="en" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <title>{% block title %}{% endblock %} Ono - The Game</title>
+    <link rel="stylesheet" href="/static/css/ono.css" type="text/css" media="screen" charset="utf-8" />
+    <link rel="stylesheet" href="/static/css/animate.css" type="text/css" media="screen" charset="utf-8" />
+    {% block scripts %}
+    {% endblock %}
+    {% block styles %}
+    {% endblock %}
+</head>
+<body>
+ <div id="header">
+   {% block header %}
+
+    <div id="onologo" class="animated fadeIn">
+      <div id="onohimself" class="animated shake"></div>
+    </div>
+   {% endblock %}
+  </div>
+  <div id="content" class="animated bounceInDown">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+    {% block content %}
+    {% endblock %}
+    </div>
+    <div id="footer">
+      {% block footer %}
+
+    <a href="#">about</a> | <a href="#">tweet @onorobot for help!</a> | <a href="#">wiki</a> | <a href="#">privacy policy</a> | <a href="#">credits</a>
+      {% endblock %}
+    </div>
+</body>
+</html>
