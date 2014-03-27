@@ -48,6 +48,10 @@ def contex():
            ,'path'  : request.path
            }
 
+@app.route('/')
+def index():
+  return render_template('base.html')
+  
 @app.route('/signup', methods=['GET'])
 def signup():
     t1 = Email()

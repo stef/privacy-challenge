@@ -1,45 +1,60 @@
-{% block doctype %}<!html>{% endblock %}
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <meta http-equiv="content-language" content="en" />
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
-    <title>{% block title %}{% endblock %} Ono - The Game</title>
-    <link rel="stylesheet" href="/static/css/ono.css" type="text/css" media="screen" charset="utf-8" />
-    <link rel="stylesheet" href="/static/css/animate.css" type="text/css" media="screen" charset="utf-8" />
-    {% block scripts %}
-    {% endblock %}
-    {% block styles %}
-    {% endblock %}
+<title> ONO THIS </title>
+<link rel="stylesheet" type="text/css" href="/static/css/framez.css">
 </head>
+
 <body>
- <div id="header">
-   {% block header %}
+<div id="wholething">
 
-    <div id="onologo" class="animated fadeIn">
-      <div id="onohimself" class="animated shake"></div>
-    </div>
-   {% endblock %}
+<div id="header" class="smallframe">
+  <h1>Corporation.cf</h1>
+  <div id="menu">
+    <a href="/products">Products</a> | <a href="/about">About Us</a> | <a href="/order">Order</a> | <a href="/products">Contact</a> | 
   </div>
-  <div id="content" class="animated bounceInDown">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul class=flashes>
-      {% for message in messages %}
-      <li>{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
-    {% endwith %}
-    {% block content %}
-    {% endblock %}
-    </div>
-    <div id="footer">
-      {% block footer %}
+</div>
 
-    <a href="#">about</a> | <a href="#">tweet @onorobot for help!</a> | <a href="#">wiki</a> | <a href="#">privacy policy</a> | <a href="#">credits</a>
-      {% endblock %}
-    </div>
+<div class="sidebar smallframe">
+  <div class="sidebartop smallframe">
+  
+  </div>
+
+  <div class="sidebarmid smallframe">
+
+  <h2></h2>
+
+  </div>
+
+  <div class="sidebarbottom smallframe">
+
+  <h2></h2>
+
+  </div>
+  
+  </div>
+
+  <div class="main smallframe">
+{% block content %}
+    <blink><h2>Welcome to Corporation.cf!<h2></blink>
+      <h3><marquee>Producing your service robots since 2002</marquee></h3>
+
+      <p>At CORPGOV, we care only about quality and serving our customers.  We also care about development of new technologies to help keep us and our families safe.  Working closely with our friendly government, we bring about the machines and the services that keep you safe and secure, and improve every quality of your life.</p>
+
+      <center>
+        <img src="/static/img/corporation.jpg" />
+      </center>
+
+      <p>When considering purchasing from CORPGOV, remember that we keep your best interests at heart.<p>
+{% endblock %}
+  </div>
+
+
+  <div id="footer" class="smallframe">
+
+  <h2> insert banner here </h2>
+
+  </div>
+
+</div>
 </body>
 </html>

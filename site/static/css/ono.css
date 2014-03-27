@@ -1,3 +1,10 @@
+html, body{
+    margin:0;
+    padding:0;
+    overflow-x:hidden;
+}
+
+
 body {
     background-color: #0e0e0e;
     color: #ffecc7;
@@ -16,6 +23,9 @@ ul li {
     list-style-type: circle;
 }
 
+a{
+    color:orange;
+}
 
 pre {
     font-family: monospace;

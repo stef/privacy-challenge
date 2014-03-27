@@ -1,0 +1,93 @@
+html{
+	background-color:black;
+}
+
+body{
+	width: 95%;
+		font-family: "Arial", "Helvetica", "Open Sans", sans-serif;
+
+}
+
+h1{
+	font-family: "Arial", "Helvetica", "Open Sans", sans-serif;
+	padding: 0 20px 0 20px;
+	font-size: 50px; 
+	color:#fff;
+	text-shadow:3px 3px 3px #000;
+}
+
+.sidebar{
+	width: 250px;
+	float: left;
+	height: 80%;
+	background-image: url('../img/metal.jpg');
+}
+
+.sidebartop, .sidebarmid, .sidebarbottom{
+	height: 200px;
+	background-image: url('../img/gabi.jpg');
+}
+
+.sidebartop{
+	background-image: url('../img/death.jpg');
+	background-size: cover;
+	background-position: top center;
+
+}
+
+.sidebarmid{
+	background-image: url('../img/wsm.gif');
+	background-size: cover;
+	background-position: top center;
+
+}
+
+.sidebarbottom{
+	background-image: url('../img/cia.png');
+	background-size: cover;
+	background-position: top center;
+
+}
+
+.main{
+	background-color: #439999;
+	margin-left: 250px;
+	padding:20px;
+
+}
+
+#wholething{
+	width: 100%;
+	border-width:5px;	
+	border-style:ridge;
+	border-color:green;
+
+}
+
+.smallframe{
+	border-width:5px;	
+	border-style:ridge;
+}
+
+p{
+	padding: 20px;
+}
+
+#footer{
+background-image: url('../img/metal.jpg');sert banner here 
+}
+
+#header{
+	background-image: url('../img/metal.jpg');
+}
+
+#menu{
+	float:right;
+}
+
+#menu a{
+	color:white;
+	font-weight:bold;
+	background-color:black;
+	padding:5px;
+}
