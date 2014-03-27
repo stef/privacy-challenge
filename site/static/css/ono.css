@@ -1,7 +1,7 @@
 body {
     background-color: #0e0e0e;
     color: #ffecc7;
-    font-size: 90%;
+    font-size: 14px;
     font-family: Verdana, Helvetica, Arial, sans-serif;
     margin-top: 5%;
 }
@@ -16,8 +16,11 @@ ul li {
     font-size: 90%;
 }
 
+
 pre {
-    font-family: Verdana, Helvetica, Arial, sans-serif;
+    font-family: monospace;
+    font-weight: bold;
+    line-height: 1em;
 }
 
 i.quotes {
