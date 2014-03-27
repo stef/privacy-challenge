@@ -2,8 +2,9 @@ body {
     background-color: #0e0e0e;
     color: #ffecc7;
     font-size: 14px;
-    font-family: Verdana, Helvetica, Arial, sans-serif;
     margin-top: 5%;
+    font-family: "Source code Pro", "Courier New", "mono", "sans";
+
 }
 
 html {
@@ -13,7 +14,6 @@ html {
 
 ul li {
     list-style-type: circle;
-    font-size: 90%;
 }
 
 
@@ -36,175 +36,6 @@ i.quotes {
 .empty {
     padding: 10px;
 }
-
-.cuerpo {
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 1px;
-    padding-bottom: 3px;
-    font-family: helvetica, tahoma, arial, sans-serif;
-    font-size: 90%;
-    color: #1e1e1e;
-    text-align: left;
-}
-
-.cabeza {
-    color: #b90027;
-    border-bottom: #959595 1px solid;
-    padding: 3px;
-    font-size: 90%; 
-    font-weight: bold;
-    font-family: helvetica, tahoma, arial, sans-serif;
-}
-
-
-.content {
-    background-color: #959595;
-    border: 1px #0e0e0e solid;
-    border-right: 1px #0e0e0e solid;
-    border-bottom: 1px #0e0e0e solid;
-    padding: 10px;
-    margin-top: 0;
-}
-
-.entry {
-    background-color: #f0f0df;
-    color: #0e0e0e;
-    margin: 0;
-    padding: 5px;
-    font-size: 90%;
-    border: #0e0e0e 1px solid;
-}
-
-.prose {
-    padding: 45px;
-    background-color: #f0f0df;
-    color: #0e0e0e;
-    font-size: 90%;
-    border-right: #b90027 3px solid;
-    border-left: #b90027 3px solid;
-    border-bottom: #b90027 3px solid;
-
-}
-
-.subentry {
-    border-right: #0e0e0e 1px solid;
-    border-left: #0e0e0e 1px solid;
-    border-bottom: #0e0e0e 1px solid;
-    margin: 0;
-    padding: 5px;
-    font-size: 90%;
-}
-
-.quote {
-    float: right;
-    margin-top: 60px; 
-    width: 50%;
-    color: #f0f0df;
-    font-size: 90%;
-    font-style: oblique;
-    vertical-align: bottom;
-}
-
-.foo {
-    color: #b90027;
-    text-transform: lowercase;
-    font-size: 90%;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    padding-left: 5px;
-    padding-right: 5px;
-    border-bottom: #0e0e0e 1px solid;
-    font-weight: bold;
-}
-
-.footer {
-    color: #f0f0df;
-    text-align: center;
-    font-size: 10px;
-}
-.sub {
-    color: #959595;
-    text-transform: uppercase;     
-    font-size: 90%;
-    padding-top: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
-    border-bottom: #b90027 1px solid;
-    font-weight: bold;
-}
-
-.about {
-    color: #0e0e0e;
-    background-color: #f0f0df;
-    border: 0;
-    text-transform: none;
-    text-align: left;
-    top: 7px;
-    padding: 7px;
-    width: 25%;
-    position: relative;
-    align: left;
-}
-
-.image {
-    width: 25%;
-    border: 0;
-    padding: 7px;
-    top: 7px;
-    right scroll no-repeat #070705;	
-}
-
-.no_borders {
-    border: 0;
-}
-
-.border {
-    border: #ffecc7 2px solid;
-}
-
-.not_black {
-    color: #f0f0df;
-}
-
-.mini { 
-    color: #696969;
-    text-transform: none;
-    font-size: 90%;
-    font-style: oblique;
-    font-weight: normal;
-    text-align: right;
-}
-
-.larger { 
-    font-size: 18px;
-}
-
-/* these classes ruined my life */
-
-table { 
-    font-size: 90%;
-    text-transform: lowercase;
-    color: #ffffff;
-    /*background-color: #b90027; /* fills in borders */
-    border: #ffffff 1px solid;
-    width: 90%;
-}
-
-td { 
-    font-size: 90%;
-    text-transform: lowercase;;
-    background-color: #b90027;
-    border: #f0f0df 1px solid;
-    width: 10%;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    text-align: center;
-}
-
-/* my menus are so cool */
-
-
 
 
 
@@ -229,6 +60,8 @@ input {
     -ms-box-sizing: border-box;
     box-sizing: border-box;
   border: 3px solid rgba(0,0,0,0);
+      font-family: "Source code Pro", "Courier New", "mono", "sans";
+
 }
 
 input:focus{
@@ -287,29 +120,11 @@ form label{
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #content{
  background-color: rgba(255,255,255,.8);
     color:#000;
     border: 1px solid #999999;
     box-shadow: 3px 3px 0 1px rgba(255, 255, 255, 0.5);
-    font-family: "Source code Pro", "Courier New", "mono", "sans";
     font-weight: 500;
     line-height: 1.5em;
     margin: 2em auto;
