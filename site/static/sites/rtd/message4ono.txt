@@ -2,9 +2,14 @@ Dear Friend,
 
 I'm impressed by your commitment and skills. You have come very far. You are almost a digital comms ninja. There are two more steps we need to make together. You'll need to decrypt this file and send it to me.
 
-In order to do this, please install PGP [HOWTO] and ask me for the password via Jabber by typing 'password' (without the quotes).
+To decrypt, you will need PGP software.  Find some more information here:
+More Encryption - https://wiki.onorobot.org/doku.php?id=more_encryption
+PGP and GPG - https://wiki.onorobot.org/doku.php?id=pgp_and_gpg
+Encrypting/Decrypting files with PGP/GPG - https://wiki.onorobot.org/doku.php?id=encrypting_decrypting_files_with_pgp_gpg
 
-Then paste the content of the decrypted file into the jabber chat.
+In order to do this, please install PGP and ask me for the password via Jabber by typing 'password' (without the quotes).
+
+At the bottom of this file is the encrypted text.  You will need to copy this into a file to decrypt it.  Here is the encrypted message:
 
 -----BEGIN PGP MESSAGE-----
 Version: GnuPG v1.4.12 (GNU/Linux)

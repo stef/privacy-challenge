@@ -1,14 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
 {% if password %}
+<h3>Great, thanks for that.</h3>
 <p>Now i can share a secret with you, which will be useful to verify each other 
 later. Here it is:</p>
 <p style="color: red">{{password}}</p>
-<p>Please do not forget to answer my last email for further steps.</p>
-<p>(you can use copy&paste for saving this password somewhere, you'll only need
-it once, when we establish our initial chat contact)</p>
+<p>You can save this password and use it to authenticate me in the chat via <i>shared secret.</i></p>
 <p>(you can always come back and ask me for a new password if you loose this
 one. I'll only remember the last one I gave you)</p>
+<p><small>
+	Hint: If you need help, check out this link:
+	<strong>	<a href="https://wiki.onorobot.org/doku.php?id=different_forms_of_authentication_with_otr_and_why_it_is_important" target="_blank" />
+Different forms of authentication with OTR and why it is important</a></strong>
+</small></p>
 {% else %}
 {% if error %}
 <p>{{error}}</p>

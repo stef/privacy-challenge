@@ -3,7 +3,7 @@ censorship in a severe denial of service attacks. I put the file on a Onion-site
 since it's practically impossible to censor such sites or attack them directly,
 so I think your file should be save there.
 
-If you want to access the Onion, please install the Tor Browser and go to 
+If you want to access the Onion (a secret website only accessible through tor), please install the Tor Browser and go to 
 http://hftpdlb256qd3z5a.onion You can find the file there.
 
 The good thing is, Tor will also anonymize your traffic online and the Tor
@@ -11,9 +11,21 @@ Browser will force sites to use HTTPS where possible.
 
 Good luck.
 
-The Administrator
+X
 
-P.S. You can find the installer and instructions here:
-https://www.torproject.org/projects/torbrowser.html.en
-more background on the Tor Browser can be found on:
+Ono.
+
+
+=================================================================================
+
+P.S. You can find the help and instructions here:
 https://securityinabox.org/en/tor_main
+
+Or skip directly to the tor download:
+https://www.torproject.org/projects/torbrowser.html.en
+
+If you are interested in more information on Anonymity online, visit these links:
+Anonymity online - https://wiki.onorobot.org/doku.php?id=anonymity_online
+Using Tor - what is it good for?- https://wiki.onorobot.org/doku.php?id=using_tor_-_what_is_it_good_for
+Tor Hidden Services, what? - https://wiki.onorobot.org/doku.php?id=tor_hidden_services_what
+

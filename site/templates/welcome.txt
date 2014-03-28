@@ -6,3 +6,11 @@ Let's first steps to setup a secure chat account so we can talk more comfortably
 
 thanks a lot!
 Ono
+
+PSSST:  If you need any help with this step, please consult our wiki:
+
+What is the difference between Skype and using jabber based instant messaging? 
+https://wiki.onorobot.org/doku.php?id=what_is_the_difference_between_skype_and_using_jabber_based_instant_messaging
+
+Help in using Jitsi and OTR
+https://wiki.onorobot.org/doku.php?id=help_in_using_jitsi_and_otr

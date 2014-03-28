@@ -108,7 +108,7 @@ def _(ctx):
         ctx.say("Howdyho!")
         ctx.say("Hey %s, good to see you!" % (ctx.jid.split('@')[0]))
         ctx.say("It seems our chat is not encrypted. Let me try to start the encryption. " \
-                 "If you never done this before, it might take a few seconds to finish.")
+                 "If you never done this before, it might take a few seconds to finish.  If nothing happens, maybe you neet to start it.")
         ctx.cmd("otr start")
     else:
         ctx.say("I recognize you, before we establish trust, let me try to (re)start the encryption.")
@@ -153,7 +153,7 @@ def startsmp(ctx):
         " receiver can read the message. We also need to verify each others identity to make sure" \
         " that we both really are who we say we are. On other words, you need to check that I'm really" \
         " Ono. Everything clear thus far?")
-    ctx.say("You should answer the question with the secret from the webpage earlier.")
+    ctx.say("You should answer the question with the secret from the webpage earlier (https://game.onorobot.org/buddy).")
     ctx.cmd("otr smpq %s %s" % (ctx.jid, ctx.smpsecret))
 
 @router(states=['otr', 'smp'], hooks=['hook-otr-smp'] )
@@ -169,7 +169,7 @@ def _(ctx):
             print >>log, "XXX smpstate", smpstate
         if smpstate == "Ok":
             ctx.say("Fantastico now this communication is completed in a secure manner." \
-                "I will hang up now, and you can go back to the page: " \
+                "I will hang up now, and you can go back to this page for the next challenge: " \
                 "http://game.onorobot.org/yay1")
             ctx.setstate('smpdancer')
         elif smpstate != "Response":
@@ -184,7 +184,7 @@ def _(ctx):
 
 @router(states=['getpks01'], hooks=defaulthooks)
 def _(ctx):
-    ctx.say("Oh, yes! The password for the file, you mean? It is: privacyis!hard")
+    ctx.say("Oh, yes! The password for the encrypted file, you mean? It is: privacyis!hard")
     ctx.setstate('pks01pwd')
 
 @router(states=['pks01pwd'], pattern="1mtCxsBpinpe", hooks=defaulthooks)
@@ -200,7 +200,7 @@ def _(ctx):
 def _(ctx):
         ctx.say("I was hoping you could help me retrieve a secret file. But now the site is being blocked" \
             " so I cannot access it. Can you have a look? http://game.onorobot.org/robotdropbox")
-        ctx.say("The password for it is: privacyis!hard")
+        ctx.say("The password for it is: privacyis!hard, you might need this later.")
 
 @router(states=['level01done'], hooks=defaulthooks)
 def _(ctx):
