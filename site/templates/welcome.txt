@@ -2,7 +2,7 @@ Hello {{ip}}{%if country %} from {{country}}{%endif%},
 
 I need your help. I know you are worried about your digital security, so am I. And frankly, I'm also worried about mine. I have been remembering things lately from my previous robotic life, gruesomely effective surveillance techniques and advanced digital attacks. I need to put the pieces back together, to help people who are potentially at risk. To do that I need access to certain websites. But I've noticed that many of these sites are blocked in my country, Secure-a-lot. Can you help me to get the right information and learn somethings about safe and secure digital communications along the way?
 
-Let's first steps to setup a secure chat account so we can talk more comfortably, skip any steps that you already have working: Please go to register.jabber.org and register an account there. Now install jitsi (http://jit.si), login to your Jabber account, add me (username ono@jabber.ccc.de) as a friend and shoot me a message.
+Let's first steps to setup a secure chat account so we can talk more comfortably, skip any steps that you already have working: Please go to register.jabber.org and register an account there. Now install jitsi (http://jit.si) - or any other xmpp client that supports OTR and SMP (Jitsi added this only early 2014, and Adium only supports this from version 1.6), login to your Jabber account, add me (username ono@jabber.ccc.de) as a friend and shoot me a message.
 
 thanks a lot!
 Ono
