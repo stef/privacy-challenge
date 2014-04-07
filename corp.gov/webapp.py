@@ -60,6 +60,10 @@ def page_not_found(e):
 def signup():
     t1 = Email()
     recp=request.args.get('email')
+
+    with open("%s/../data/seenmails" % basepath,'c') as f:
+        seen = set(f.read().split())
+    
     #if not t1(recp):
     #    return render_template('weirdmail.html')
     #msg = Message("save secure-a-lot",

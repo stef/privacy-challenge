@@ -13,7 +13,7 @@ basepath='..'
 botjid='ono@jabber.ccc.de'
 
 hooks=['hook-otr-start', 'hook-post-message-in', 'hook-otr-smp']
-states=['start', 'otr', 'smp', 'smpdancer', 'getpks01', 'pks01pwd', 'level01done' ]
+states=['', 'otr', 'smp', 'smpdancer', 'getpks01', 'pks01pwd', 'level01done' ]
 defaulthooks=['hook-post-message-in', 'hook-otr-start']
 
 ####################################
@@ -23,22 +23,19 @@ router=Router(hooks,states)
 
 class Context(object):
     def __init__(self):
-        self.hook=os.getenv('hook')
-        self.jid=os.getenv('jid')
-        self.message=os.getenv('message')
+        self.__dict__['hook']=os.getenv('hook')
+        self.__dict__['jid']=os.getenv('jid')
+        self.__dict__['message']=os.getenv('message')
+        self.__dict__['matches']=None
 
         # this is the main application secret shared with lamson and django
         with open('%s/site/secret' % basepath,'r') as f:
-            self.secret=f.read().strip()
+            self.__dict__['secret']=f.read().strip()
 
         # key is the hmac(secret, jid) for reference of users in the fs
-        self.key=hmac.new(self.secret, self.jid, hashlib.sha256).hexdigest()
+        self.__dict__['key']=hmac.new(self.secret, self.jid, hashlib.sha256).hexdigest()
 
-        self.state=self.getstate()
-
-        self.smpsecret=self.getsmpsecret()
-
-        self.type=os.getenv('type')
+        self.__dict__['type']=os.getenv('type')
 
         self.debug()
 
@@ -58,7 +55,7 @@ class Context(object):
                 print >>log, "hook", self.hook
                 print >>log, "jid", self.jid
                 print >>log, "msg", self.message
-                print >>log, "smpsecret", self.smpsecret
+                print >>log, "smpsecret", not not self.smpsecret
                 print >>log, "key", self.key
                 print >>log, "state", self.state
                 print >>log, "type", self.type
@@ -73,42 +70,29 @@ class Context(object):
         with open('%s/otr/mcabber.fifo' % basepath, 'a') as fd:
             fd.write("%s\n" % cmd)
 
-    def setstate(self, state):
-        self.state=state
-        with open('%s/data/states/%s' % (basepath, self.key), 'w') as fd:
-            fd.write(state)
-
-    def getstate(self):
-        try:
-            with open('%s/data/states/%s' % (basepath, self.key), 'r') as fd:
-                return fd.read()
-        except IOError:
-            return 'start'
-
-    def getsmpsecret(self):
-        with open('/tmp/onolog', 'a') as log:
-            print >>log, '%s/data/smpsec/%s' % (basepath, self.key)
-        try:
-            fd=open('%s/data/smpsec/%s' % (basepath, self.key), 'r')
-        except IOError:
-            # uhoh, never before seen player
-            smpsecret=None
+    def __getattr__(self, name):
+        if name not in self.__dict__ and name in ('state', 'acc', 'smpsecret'):
+            try:
+                with open('%s/data/%s/%s' % (basepath, self.key, name), 'r') as fd:
+                    return fd.read()
+            except IOError:
+                return ''
+        if name in self.__dict__.keys():
+            return self.__dict__[name]
         else:
-            smpsecret=fd.read()
-            fd.close()
-        return smpsecret
+            raise AttributeError, name
 
-    def setacc(self, data):
-        self.acc=data
-        with open('%s/data/acc/%s' % (basepath, self.key), 'w') as fd:
-            fd.write(data)
-
-    def getacc(self):
-        try:
-            with open('%s/data/acc/%s' % (basepath, self.key), 'r') as fd:
-                return fd.read()
-        except IOError:
-            return ''
+    def __setattr__(self, name, value):
+        if name not in self.__dict__ and name in ('state', 'acc', 'smpsecret'):
+            self.__dict__[name]=value
+            if not os.path.exists('%s/data/%s' % (basepath, self.key)):
+                os.mkdir('%s/data/%s' % (basepath, self.key))
+            with open('%s/data/%s/%s' % (basepath, self.key, name), 'w') as fd:
+                fd.write(value)
+        elif name in self.__dict__.keys():
+            self.__dict__[name]=value
+        else: 
+            raise AttributeError, name
 
 ####################################
 # routes
@@ -123,13 +107,13 @@ def greet1(ctx):
    ctx.cmd("otr start %s" % (ctx.jid))
 
 # start
-@router(states=['start'], hooks=['hook-subscription'] )
+@router(states=[''], hooks=['hook-subscription'] )
 def _(ctx):
    if ctx.type=='subscribe':
       ctx.cmd("event %s accept" % ctx.message)
       greet1(ctx)
 
-@router(states=['start'], hooks=['hook-post-message-in'] )
+@router(states=[''], hooks=['hook-post-message-in'] )
 def plain(ctx):
     if not ctx.smpsecret:
         greet1(ctx)
@@ -144,14 +128,14 @@ def otr(ctx):
         ctx.say("Hey %s, good to see you! We should establish some kind of trust for our upcoming communication." % (ctx.jid.split('@')[0]))
         ctx.say("Please go to: https://game.onorobot.org/buddy")
         ctx.say("to get a one time usable shared secret between us two, then come back.")
-        ctx.setstate('smp')
+        ctx.state = 'smp'
     else:
         startsmp(ctx)
 
 # start + otr -> smp
-@router(states=['start'], hooks=['hook-otr-start'] )
+@router(states=[''], hooks=['hook-otr-start'] )
 def _(ctx):
-    ctx.setstate('otr')
+    ctx.state = 'otr'
     otr(ctx)
 
 @router(states=['smp'], hooks=defaulthooks)
@@ -181,16 +165,14 @@ def _(ctx):
         ctx.say("We have no shared secret, wanna do a telepathic diffie-hellman perhaps?")
         ctx.say("You might want go to: https://game.onorobot.org/buddy")
         ctx.say("... to get yourself a secret, that we can use for establishing our trust.")
-        if ctx.state != 'smp': ctx.setstate('smp')
+        if ctx.state != 'smp': ctx.state = 'smp'
     else:
         smpstate=os.getenv('state')
-        with open('/tmp/onolog', 'a') as log:
-            print >>log, "XXX smpstate", smpstate
         if smpstate == "Ok":
-            ctx.say("Fantastico now this communication is completed in a secure manner."
+            ctx.say("Fantastico now this communication is completed in a secure manner. "
                 "I will hang up now, and you can go back to the page for the "
                 "next challenge: http://game.onorobot.org/yay1")
-            ctx.setstate('smpdancer')
+            ctx.state = 'smpdancer'
         elif smpstate != "Response":
             ctx.say("That didn't work: %s" % smpstate)
 
@@ -199,21 +181,21 @@ def _(ctx):
     ctx.say("Great, now that we can chat securely, I was hoping you could help me retrieve a secret file. " \
         "I dropped the file in a dropbox a while ago, but now the site is being blocked so I cannot access" \
         " it. Can you have a look? http://game.onorobot.org/robotdropbox")
-    ctx.setstate('getpks01')
+    ctx.state = 'getpks01'
 
 @router(states=['getpks01'], pattern='password', hooks=defaulthooks)
 def _(ctx):
     ctx.say("Oh, yes! The password for the encrypted file, you mean? It is: privacyis!hard")
-    ctx.setstate('pks01pwd')
+    ctx.state = 'pks01pwd'
 
-@router(states=['pks01pwd'], pattern="1mtCxsBpinpe", hooks=defaulthooks)
+@router(states=['pks01pwd', 'getpks01'], pattern="1mtCxsBpinpe", hooks=defaulthooks)
 def _(ctx):
     ctx.say("Thank you! We have with this we can really make a case! You are one committed Savior of " \
         "Secure-a-lot. And you are able to browse the internet securely (HTTPS), anonymously (Tor browser)" \
         " and chat securely with your friend and verify if they are who they say they are (Jabber + OTR)!")
     ctx.say("You've got what it takes to help me expose the wrongdoings that have been going on in " \
         "Secure-a-lot. Are you up to it to help me a bit more? I will be in contact with you shortly.")
-    ctx.setstate('level01done')
+    ctx.state = 'level01done'
 
 @router(states=['pks01pwd'], hooks=defaulthooks)
 def _(ctx):

@@ -74,6 +74,7 @@ def signup():
     recp=request.args.get('email')
     if not t1(recp):
         return render_template('weirdmail.html')
+    
     msg = Message("save secure-a-lot",
                   sender = "ono@game.onorobot.org",
                   recipients = [recp])
@@ -119,7 +120,9 @@ def buddy():
             error="You have a strange chat account, I can't recognize it, would you please try again:"
         else:
             password=genpassphrase()
-            fn="%s/../data/smpsec/%s" % (basepath, hmac.new(secret, recp, hashlib.sha256).hexdigest())
+            if not os.path.exists('%s/../data/%s' % (basepath, hmac.new(secret, recp, hashlib.sha256).hexdigest())):
+                os.mkdir('%s/../data/%s' % (basepath, hmac.new(secret, recp, hashlib.sha256).hexdigest()))
+            fn="%s/../data/%s/smpsecret" % (basepath, hmac.new(secret, recp, hashlib.sha256).hexdigest())
             with open(fn,'w') as f:
                 f.write(password)
     return render_template('buddy.html',
