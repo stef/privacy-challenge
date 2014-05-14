@@ -11,6 +11,7 @@ debug=1
 basepath='..'
 #botjid='ono@xmpp.hsbp.org'
 botjid='ono@jabber.ccc.de'
+WWW_DATA = 33
 
 hooks=['hook-otr-start', 'hook-post-message-in', 'hook-otr-smp']
 states=['', 'otr', 'smp', 'smpdancer', 'getpks01', 'pks01pwd', 'level01done' ]
@@ -62,9 +63,9 @@ class Context(object):
                 print >>log, '------------------'
 
     def say(self, msg):
+        time.sleep(len(msg)/20)
         with open('%s/otr/mcabber.fifo' % basepath, 'a') as fd:
             fd.write("say_to -q %s %s\n" % (self.jid, msg))
-        time.sleep(len(msg)/20)
 
     def cmd(self, cmd):
         with open('%s/otr/mcabber.fifo' % basepath, 'a') as fd:
@@ -85,8 +86,11 @@ class Context(object):
     def __setattr__(self, name, value):
         if name not in self.__dict__ and name in ('state', 'acc', 'smpsecret'):
             self.__dict__[name]=value
-            if not os.path.exists('%s/data/%s' % (basepath, self.key)):
-                os.mkdir('%s/data/%s' % (basepath, self.key))
+            p = '%s/data/%s' % (basepath, self.key)
+            if not os.path.exists(p):
+                os.mkdir(p)
+                os.chown(p, -1, WWW_DATA)
+                os.chmod(p, 0775)
             with open('%s/data/%s/%s' % (basepath, self.key, name), 'w') as fd:
                 fd.write(value)
         elif name in self.__dict__.keys():
@@ -103,7 +107,7 @@ def greet1(ctx):
    ctx.say("Hey %s, good to see you!" % (ctx.jid.split('@')[0]))
    ctx.say("It seems our chat is not encrypted. Let me try to start the encryption. "
            "If you never done this before, it might take a few seconds to finish. "
-           "If nothing happens, maybe you neet to start it.")
+           "If nothing happens, maybe you need to start it.")
    ctx.cmd("otr start %s" % (ctx.jid))
 
 # start
@@ -163,6 +167,7 @@ def startsmp(ctx):
 def _(ctx):
     if not ctx.smpsecret:
         ctx.say("We have no shared secret, wanna do a telepathic diffie-hellman perhaps?")
+        ctx.say("Did you misstype your jabber address perhaps?")
         ctx.say("You might want go to: https://game.onorobot.org/buddy")
         ctx.say("... to get yourself a secret, that we can use for establishing our trust.")
         if ctx.state != 'smp': ctx.state = 'smp'
@@ -173,6 +178,8 @@ def _(ctx):
                 "I will hang up now, and you can go back to the page for the "
                 "next challenge: http://game.onorobot.org/yay1")
             ctx.state = 'smpdancer'
+        elif smpstate == "Init":
+            ctx.cmd("otr smpr %s %s" % (ctx.jid, ctx.smpsecret))
         elif smpstate != "Response":
             ctx.say("That didn't work: %s" % smpstate)
 
