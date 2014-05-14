@@ -75,6 +75,21 @@ def signup():
     if not t1(recp):
         return render_template('weirdmail.html')
     
+    found = False
+    try:
+        with open("%s/../data/seenmails" % basepath,'r') as f:
+            line = f.readline()
+            while line:
+                if line.strip() == recp.strip():
+                    found = True
+                    break
+                line = f.readline()
+    except IOError:
+        pass
+    if not found:
+        with open("%s/../data/seenmails" % basepath,'a') as f:
+            f.write("%s\n" % hmac.new(secret, recp, hashlib.sha256).hexdigest())
+    
     msg = Message("save secure-a-lot",
                   sender = "ono@game.onorobot.org",
                   recipients = [recp])
@@ -105,7 +120,7 @@ def genpassphrase():
     del words
     def deligen():
         while True:
-            yield random.choice(u'!@#$%^&*();,<>[]{}|:"?+_')
+            yield random.choice(u'!@#$%^&*();,[]{}|:"?+_')
     delim=deligen()
     return u''.join(itertools.chain.from_iterable(itertools.izip(tmp, delim)))
 
