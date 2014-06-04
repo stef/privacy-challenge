@@ -1,0 +1,11 @@
+Welcome ${{name}},
+
+You can now login to our site at:
+https://{{host}}/login
+
+and afterwards access customer support and documentation at
+https://{{host}}/myproducts
+
+Best Regards,
+
+Corporation.cf Customer Care
