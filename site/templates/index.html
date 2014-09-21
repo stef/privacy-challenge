@@ -1,6 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
 <h1>Welcome to the ONO digital security game!</h1>
+<video width="600" height="300" controls autobuffer>
+    <source src="/static/files/intro.mp4" type="video/mp4" />
+    <source src="/static/files/intro.ogv" type="video/ogg" />
+    <div class="fallback">
+       <p>download the <a href="http://game.onorobot.org/static/files/intro.mp4">intro movie</a> and view it locally</p>
+   </div>
+</video>
 <p>Do you want to help Ono save Secure-a-lot and learn all about safe and secure
 communications along the way?  If you are ready for your treasure hunt through the internet, enter your email, and Ono will get in contact with YOU!</p>
 <form action="signup">
