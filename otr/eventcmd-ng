@@ -66,7 +66,7 @@ class Context(object):
                 print >>log, '------------------'
 
     def say(self, msg):
-        time.sleep(len(msg)/20)
+        time.sleep(len(msg)/40)
         with open('%s/otr/mcabber.fifo' % basepath, 'a') as fd:
             fd.write("say_to -q %s %s\n" % (self.jid, msg))
 
@@ -206,6 +206,9 @@ def _(ctx):
         " and chat securely with your friend and verify if they are who they say they are (Jabber + OTR)!")
     ctx.say("You've got what it takes to help me expose the wrongdoings that have been going on in " \
         "Secure-a-lot. Are you up to it to help me a bit more? I will be in contact with you shortly.")
+    ctx.say("I'm off to investigate the results and report back soon if I need "
+          "your help again. In the meanwhile you can visit my wiki where we "
+          "document all this on: https://wiki.onorobot.org.")
     ctx.state = 'level01done'
 
 @router(states=['pks01pwd'], hooks=defaulthooks)
@@ -217,9 +220,6 @@ def _(ctx):
 
 @router(states=['level01done'], hooks=defaulthooks)
 def _(ctx):
-    ctx.say("I'm off to investigate the results and report back soon if I need "
-          "your help again. In the meanwhile you can visit my wiki where we "
-          "document all this on: https://wiki.onorobot.org.")
     ctx.say("Thanks for the help in the first round.  I am excited to have met a good friend in you.  Will you help me discover some things about my past and to learn where I came from?  I know a few things. I am a robot. I was built by a corporation.")
     tmp = get_val('corp.cf.zone', ctx.key, first)
     if not tmp:
