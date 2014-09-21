@@ -1,20 +1,22 @@
 #!/usr/bin/env python
 
-import os, hmac, hashlib, time
+import os, hmac, hashlib, time, sys
 from router import Router
+basepath='..'
+#from config import botjid
+from game import ono_rand_id, append_table, get_val,first, add_state, get_state
 
 ####################################
 # config
 ####################################
 debug=1
 
-basepath='..'
 #botjid='ono@xmpp.hsbp.org'
 botjid='ono@jabber.ccc.de'
 WWW_DATA = 33
 
 hooks=['hook-otr-start', 'hook-post-message-in', 'hook-otr-smp']
-states=['', 'otr', 'smp', 'smpdancer', 'getpks01', 'pks01pwd', 'level01done' ]
+states=['', 'otr', 'smp', 'smpdancer', 'getpks01', 'pks01pwd', 'level01done', 'datasheet', 'level02done']
 defaulthooks=['hook-post-message-in', 'hook-otr-start']
 
 ####################################
@@ -53,6 +55,7 @@ class Context(object):
     def debug(self):
         if debug:
             with open('/tmp/onolog', 'a') as log:
+                print >>log, 'hook="%s" jid="%s" message=%s type="%s"' % (self.hook, self.jid, repr(self.message), self.type)
                 print >>log, "hook", self.hook
                 print >>log, "jid", self.jid
                 print >>log, "msg", self.message
@@ -124,6 +127,7 @@ def plain(ctx):
     else:
         ctx.say("I recognize you, before we establish trust, let me try to (re)start the encryption.")
         ctx.cmd("otr start %s" % (ctx.jid))
+        ctx.state = 'otr'
 
 @router(states=['otr'], hooks=defaulthooks )
 def otr(ctx):
@@ -216,6 +220,62 @@ def _(ctx):
     ctx.say("I'm off to investigate the results and report back soon if I need "
           "your help again. In the meanwhile you can visit my wiki where we "
           "document all this on: https://wiki.onorobot.org.")
+    ctx.say("Thanks for the help in the first round.  I am excited to have met a good friend in you.  Will you help me discover some things about my past and to learn where I came from?  I know a few things. I am a robot. I was built by a corporation.")
+    tmp = get_val('corp.cf.zone', ctx.key, first)
+    if not tmp:
+        prefix=ono_rand_id()
+        append_table('corp.cf.zone',':'.join((ctx.key, prefix)))
+    else:
+        prefix=tmp[len(ctx.key)+1:]
+    ctx.say("As a first step we should find out some basic information about my functioning. The easiest way is to go to my vendor http://%s.corporation.cf and download any publicly available information about me as a product. I am sure this is the company that built me." % prefix)
+    ctx.say("You'll probably have to register, do not use your real email address or any other real data when asked to register for downloading.")
+    ctx.say("Also since my vendor hard-wired their security certificates i can provide you those to verify if the ssl fingerprint of the site, which matches this sha1 fingerprint: 98:5A:FB:99:4A:42:75:B0:DB:22:C1:A3:6A:81:5E:48:65:6A:22:85")
+    ctx.say("You should verify this fingerprint by clicking on the urlbar on the lock icon and get to the details listing a sha1 fingerprint.")
+    ctx.state = 'datasheet'
+
+@router(states=['datasheet'], pattern="password: ", hooks=defaulthooks)
+def _(ctx):
+    # todo implement password check! check length, entropy and pidgin html
+    # encoding
+    add_state(ctx.key, 'prod.pdf.pass', ctx.message[len('password: '):])
+    ctx.say("thanks, i will try that")
+    ctx.say("ask me about it after sending me the mail.")
+
+@router(states=['datasheet'], pattern="yes", hooks=defaulthooks)
+def _(ctx):
+    tmp = get_val('dox-mailid', ctx.key, first)
+    if not tmp:
+        mailid=ono_rand_id()
+        append_table('dox-mailid',':'.join((ctx.key, mailid)))
+    else:
+        mailid=tmp[len(ctx.key)+1:]
+    ctx.say("awesome! \o/ you are great!")
+    ctx.say("can you please encrypt the pdf with pgp - but not using a public key, instead you should use a very strong password and use that to encrypt the file, then you tell me the password here in this chat after sending me the encrypted file to ono-dox-%s@vps598.greenhost.nl" % mailid)
+    ctx.say("for generating the password i recommend you to use a password generator application like KeepassX - just generate some 50 character long random key with it and then copy-paste when asked for it.")
+    ctx.say("for encrypting the file you should use something like:")
+    ctx.say("gpg -c <ono-doc.pdf >doc.gpg")
+    ctx.say("when that succeeds, tell me the password like this")
+    ctx.say("password: lot'sofrandomcharacters..............")
+    ctx.say("where you replace ono-doc.pdf with the appropriate filename that you want to encrypt")
+
+@router(states=['datasheet'], hooks=defaulthooks)
+def _(ctx):
+    if get_state(ctx.key, 'prod.pdf.done'):
+        ctx.say("Fantastic! I received the doc, and could correctly decrypt it. Well done! You are getting a capable internet-ninja! The data in the doc is quite sparse, but the names of the components seem quite useful for further research!")
+        ctx.state = 'level02done'
+    elif get_state(ctx.key, 'prod.pdf.err'):
+        ctx.say("hm, there was something wrong with the doc you sent me:")
+        for line in get_state(ctx.key, 'prod.pdf.err').split('\n'):
+            ctx.say(line)
+    else:
+        ctx.say("you got the doc?")
+
+@router(states=['level02done'], hooks=defaulthooks)
+def _(ctx):
+    ctx.say("I'm off to investigate the results and report back soon if I need "
+          "your help again. In the meanwhile you can visit my wiki where we "
+          "document all this on: https://wiki.onorobot.org.")
+    ctx.say("Thanks for the help in the 2nd round.  I am excited to have met a good friend in you.")
 
 ####################################
 
