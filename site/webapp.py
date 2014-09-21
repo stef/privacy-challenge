@@ -135,9 +135,12 @@ def buddy():
             error="You have a strange chat account, I can't recognize it, would you please try again:"
         else:
             password=genpassphrase()
-            if not os.path.exists('%s/../data/%s' % (basepath, hmac.new(secret, recp, hashlib.sha256).hexdigest())):
-                os.mkdir('%s/../data/%s' % (basepath, hmac.new(secret, recp, hashlib.sha256).hexdigest()))
-            fn="%s/../data/%s/smpsecret" % (basepath, hmac.new(secret, recp, hashlib.sha256).hexdigest())
+            statepath='%s/../data/%s' % (basepath, hmac.new(secret, recp, hashlib.sha256).hexdigest())
+            if not os.path.exists(statepath):
+                os.mkdir(statepath)
+                os.chmod(statepath, 0770)
+                os.chown(statepath, -1, 1000)
+            fn="%s/smpsecret" % statepath
             with open(fn,'w') as f:
                 f.write(password)
     return render_template('buddy.html',
