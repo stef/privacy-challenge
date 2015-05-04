@@ -1,17 +1,25 @@
+@font-face {
+    font-family: 'MontserratRegular';
+    src: url('../fonts/MontserratRegular.eot');
+    src: url('../fonts/MontserratRegular.eot') format('embedded-opentype'),
+         url('../fonts/MontserratRegular.woff2') format('woff2'),
+         url('../fonts/MontserratRegular.woff') format('woff'),
+         url('../fonts/MontserratRegular.ttf') format('truetype'),
+         url('../fonts/MontserratRegular.svg#MontserratRegular') format('svg');
+}
+
 html, body{
     margin:0;
     padding:0;
     overflow-x:hidden;
 }
 
-
 body {
     background-color: #0e0e0e;
     color: #ffecc7;
     font-size: 14px;
     margin-top: 5%;
-    font-family: "Source code Pro", "Courier New", "mono", "sans";
-
+    font-family: "MontserratRegular";
 }
 
 html {
@@ -48,19 +56,16 @@ i.quotes {
 }
 
 
-
 form{
     background-color:rgba(0,0,0,.2);
     padding:2em 1em;
-        box-shadow: 3px 3px 0 1px orange;
-
+    box-shadow: 3px 3px 0 1px orange;
 }
-
 
 
 input {
     color:#3c3c3c;
-  font-weight:500;
+    font-weight:500;
     font-size: 1.4em;
     border-radius: 0;
     background-color: #fbfbfb;
@@ -69,9 +74,7 @@ input {
     -moz-box-sizing: border-box;
     -ms-box-sizing: border-box;
     box-sizing: border-box;
-  border: 3px solid rgba(0,0,0,0);
-      font-family: "Source code Pro", "Courier New", "mono", "sans";
-
+    border: 3px solid rgba(0,0,0,0);
 }
 
 input:focus{
@@ -82,7 +85,6 @@ input:focus{
     outline: none;
 }
 
-
 input[type="submit"]{
     border: #fbfbfb solid 4px;
     cursor:pointer;
@@ -92,8 +94,8 @@ input[type="submit"]{
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     transition: all 0.3s;
-  margin-top:-4px;
-  font-weight:700;
+    margin-top:-4px;
+    font-weight:700;
 }
 
 input[type="submit"]:hover{
@@ -120,27 +122,26 @@ input[type="submit"]:hover .ease{
   background-color:white;
 }
 
-
+input[type="text"]{
+  width: 310px;
+}
 
 form label{
     display: inline-block;
     position: relative;
-    width: 20%;
+    padding-right:10px;
 }
 
-
-
 #content{
- background-color: rgba(255,255,255,.8);
+    background-color: rgba(255,255,255,.8);
     color:#000;
     border: 1px solid #999999;
     box-shadow: 3px 3px 0 1px rgba(255, 255, 255, 0.5);
     font-weight: 500;
     line-height: 1.5em;
     margin: 2em auto;
-    max-width: 600px;
+    width: 600px;
     padding: 2em;
-
 }
 
 #onologo{
@@ -148,11 +149,10 @@ form label{
     background-image: url(../images/onobackground.jpg);
     height:260px;
     margin:0 auto;
-
     -moz-animation-duration: 10s;
--o-animation-duration: 10s;
--webkit-animation-duration: 10s;
-animation-duration: 10s;
+    -o-animation-duration: 10s;
+    -webkit-animation-duration: 10s;
+    animation-duration: 10s;
 }
 
 #onohimself{
@@ -160,30 +160,28 @@ animation-duration: 10s;
     background-image: url(../images/onohimself.png);
     height:260px;
     -moz-animation-duration: 3s;
-  -moz-animation-delay: 2s;
-  -moz-animation-iteration-count: infinite;
-      -o-animation-duration: 3s;
-  -o-animation-delay: 2s;
-  -o-animation-iteration-count: infinite;
-        -webkit-animation-duration: 3s;
-  -webkit-animation-delay: 2s;
-  -webkit-animation-iteration-count: infinite;
-        animation-duration: 3s;
-  animation-delay: 2s;
-  animation-iteration-count: infinite;
+    -moz-animation-delay: 2s;
+    -moz-animation-iteration-count: infinite;
+    -o-animation-duration: 3s;
+    -o-animation-delay: 2s;
+    -o-animation-iteration-count: infinite;
+    -webkit-animation-duration: 3s;
+    -webkit-animation-delay: 2s;
+    -webkit-animation-iteration-count: infinite;
+    animation-duration: 3s;
+    animation-delay: 2s;
+    animation-iteration-count: infinite;
 }
 
 small{
     opacity:1;
- color: #3498db;
-
+    color: #3498db;
 }
-
 
 h1{
     text-align: center;
-        text-shadow: 2px 2px 0px #3498db;
-
+    text-shadow: 2px 2px 0px #3498db;
+    font-size: 26px;
 }
 
 #footer{
@@ -193,9 +191,9 @@ h1{
     padding: 1em;
     background-color:#666;
     text-align:center;
+    font-size: 11px;
 }
 
 #footer:hover{
     opacity:1;
 }
-
