@@ -173,8 +173,9 @@ form label{
     animation-iteration-count: infinite;
 }
 
-small{
-    opacity:1;
+.small{
+    font-size: 13px;
+    text-align: center;
     color: #3498db;
 }
 
