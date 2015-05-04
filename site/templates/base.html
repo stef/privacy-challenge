@@ -1,5 +1,5 @@
 <html>
-<head>
+  <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="content-language" content="en" />
     <meta name="description" content="" />
@@ -11,34 +11,36 @@
     {% endblock %}
     {% block styles %}
     {% endblock %}
-</head>
-<body>
- <div id="header">
-   {% block header %}
-
-    <div id="onologo" class="animated fadeIn">
-      <div id="onohimself" class="animated shake"></div>
+  </head>
+  <body>
+    <div id="header">
+      {% block header %}
+        <div id="onologo" class="animated fadeIn">
+          <div id="onohimself" class="animated shake"></div>
+        </div>
+      {% endblock %}
     </div>
-   {% endblock %}
-  </div>
-  <div id="content" class="animated bounceInDown">
-    {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul class=flashes>
-      {% for message in messages %}
-      <li>{{ message }}</li>
-      {% endfor %}
-    </ul>
-    {% endif %}
+    <div id="content" class="animated bounceInDown">
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class=flashes>
+          {% for message in messages %}
+            <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
     {% endwith %}
     {% block content %}
     {% endblock %}
-    </div>
-    <div id="footer">
-      {% block footer %}
-
-    <a href="#">about</a> | <a href="https://twitter.com/onorobot" target="_blank">tweet @onorobot for help!</a> | <a href="https://wiki.onorobot.org" target="_blank">wiki</a> | <a href="https://wiki.onorobot.org/doku.php?id=privacy_policy" target="_blank" >privacy policy</a> | <a href="#">credits</a> | <a href="https://wiki.onorobot.org/doku.php?id=encryption_warnig" target="_blank">disclaimer</a>
-      {% endblock %}
-    </div>
+  </div>
+  <div id="footer">
+    {% block footer %}
+      <a href="https://wiki.ononymous.org/doku.php?id=about" target="_blank">about</a> |
+      <a href="https://twitter.com/ononymousTTC" target="_blank">tweet @ononymousTTC for help!</a> |
+      <a href="https://wiki.ononymous.org" target="_blank">wiki</a> |
+      <a href="https://wiki.ononymous.org/doku.php?id=privacy_policy" target="_blank" >privacy policy</a> |
+      <a href="https://wiki.ononymous.org/doku.php?id=encryption_warnig" target="_blank">disclaimer</a>
+    {% endblock %}
+  </div>
 </body>
 </html>
