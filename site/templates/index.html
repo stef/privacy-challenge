@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Welcome to the ONO digital security game!</h1>
+<h1>Welcome to the ONO digital security Game!</h1>
 <video width="600" height="300" controls autobuffer>
     <source src="/static/files/intro.mp4" type="video/mp4" />
     <source src="/static/files/intro.ogv" type="video/ogg" />
@@ -14,5 +14,5 @@ communications along the way?  If you are ready for your treasure hunt through t
    <label>your email address:</label><input type="text" name="email" />
    <input type="submit" value="signup" />
 </form>
-<p><small>Hint: You shouldn't trust random third parties with your email address.  How are you sure you can trust us?  Creating a unique email address for this contact is an excellent way to protect your identity in case the untrusted 3rd party leaks private information.<small></p>
+<p class='small'>Hint: You shouldn't trust random third parties with your email address.  How are you sure you can trust us?  Creating a unique email address for this contact is an excellent way to protect your identity in case the untrusted 3rd party leaks private information.</p>
 {% endblock %}
